@@ -14,7 +14,7 @@ VERSION = re.search(r"\bVERSION (\d+\.\d+\.\d+)", (ROOT/"CMakeLists.txt").read_t
 PREFIX = f"KT-{VERSION}"
 SOURCE_DIRS = (".github", "apps", "core", "content", "docs", "shell", "tests", "third_party", "tools")
 ROOT_FILES = (".gitignore", "README.md", "CMakeLists.txt", "LICENSE", "THIRD_PARTY.md",
-              "kt.cmd", "setup.cmd", "requirements-dev.txt", "requirements-dev.lock", "START_HERE.md")
+              "kt.cmd", "setup.cmd", "requirements-dev.txt", "requirements-dev.lock")
 
 def source_files():
     for name in ROOT_FILES:
@@ -24,8 +24,6 @@ def source_files():
             if not p.is_file() or "__pycache__" in p.parts or ".git" in p.parts:
                 continue
             if p.suffix.lower() in {".pyc", ".db", ".exe", ".zip", ".dll", ".log"}:
-                continue
-            if p.name == "laptop-kit-verification.md":
                 continue
             yield p
 

@@ -5,7 +5,7 @@ https://api.nuget.org/v3-flatcontainer/python/3.13.12/python.3.13.12.nupkg
 Python documents this package at https://docs.python.org/3.13/using/windows.html#the-nuget-org-packages
 
 SFML-source.zip and freetype-source.zip contain the original source checkouts
-listed in CODEX_HANDOFF.md, including their licenses, with Git metadata omitted.
+pinned in `tools/setup-source.ps1`, including their licenses, with Git metadata omitted.
 `wheels/` contains the Windows x64 / CPython 3.13 packages resolved from PyPI
 using requirements-dev.lock. Wheels retain their packaged license metadata.
 `manifest.json` records SHA-256 checksums for transfer integrity.

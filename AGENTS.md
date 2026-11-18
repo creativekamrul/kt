@@ -6,7 +6,7 @@ this C++ SDP100 course project on a Windows laptop to take to university.
 ## First session on the laptop
 
 When the owner asks to review this transferred project and get started, read
-`START_HERE.md` and `CODEX_HANDOFF.md`, inspect `tools/setup-windows.ps1`, then run
+the setup section in `README.md`, inspect `tools/setup-windows.ps1`, then run
 `setup.cmd` from the project root. The owner requested setup, installation of the
 required project-local tools, and verification as part of this handoff. A request
 explicitly limited to read-only review takes precedence. Do not assume setup has

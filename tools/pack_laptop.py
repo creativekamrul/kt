@@ -8,7 +8,7 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 DIRECTORIES = ('.github', 'apps', 'content', 'core', 'docs', 'shell', 'tests', 'third_party', 'tools', 'support')
-FILES = ('.gitignore', 'AGENTS.md', 'START_HERE.md', 'CODEX_HANDOFF.md', 'CMakeLists.txt',
+FILES = ('.gitignore', 'AGENTS.md', 'CMakeLists.txt',
          'LICENSE', 'README.md', 'THIRD_PARTY.md', 'requirements-dev.txt',
          'requirements-dev.lock', 'kt.cmd', 'setup.cmd',
          'output/proposal/KT_Project_Proposal.docx',

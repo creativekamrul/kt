@@ -4,26 +4,22 @@ KT is an offline pixel-art mountain adventure for Windows. Your first landmark i
 
 **[Download KT.exe for Windows x64](https://github.com/creativekamrul/kt/releases/latest/download/KT.exe)** · [Player guide and boss screenshots](docs/player-guide.md) · [Build from source](#build-from-source)
 
-![A climber in Willow Bay plaza, with gold arrows pointing west toward the bridge](docs/screenshots/willow-bay.png)
+## What's new in KT 1.2.2
 
-### Which version can I play?
+Choose **New climber** to try the opening. Talk to Nia in Willow Bay plaza with **E** or controller **A**, then choose **Walk with Nia**. She walks ahead toward the bridge and waits if you fall behind. At the creek, her counting hint helps you fit the first plank. Finish all three spans and Sol taps the last plank into place for Nia's first crossing.
 
-| Build | What you can play |
+![Nia walks ahead of the climber on the west path, with Willow Bridge visible across the creek](docs/screenshots/nia-leads-the-way.png)
+
+| Dodge the practice gust | Parry the next gust |
 |---|---|
-| [Release 1.2.2](https://github.com/creativekamrul/kt/releases/tag/v1.2.2) | Follow Nia to Willow Bridge, practice with a harmless gust, and light the trail with **Show me the way**. Collect guardian stamps, talk to Sol about them, and greet the guardians after their fights. |
-| [Earlier release 1.0.0](https://github.com/creativekamrul/kt/releases/tag/v1.0.0) | The complete climb from Willow Bay to the summit, two guardians, bridge repair, village errands, adaptive trails and four expeditions. |
-| [Release 1.2.0](https://github.com/creativekamrul/kt/releases/tag/v1.2.0) | Adds the Ember Fox and Bellback Tortoise, brighter scenery, a field guide, per-climber camp saves and a parent report. The screenshots on this page and in the guide come from this build. |
+| ![First Bracken Rise lesson showing the dodge cue beside the climber](docs/screenshots/dodge-practice.png) | ![Second Bracken Rise lesson showing the parry star and controller prompt](docs/screenshots/parry-practice.png) |
+| Face sideways and press **Space / B** when the star shines. | Press **Q / X** on the next star. Practice costs no hearts, and you choose when to continue. |
 
-## Your first climb
+Open the trail journal outside combat with **J / Y**. Each guardian adds a stamp when you first meet. Show Sol what you've seen, then visit the cleared guardians to say hello.
 
-Follow the gold arrows west. You can stop to talk with Nia the florist, deliver creek bells to Sol, or practice parrying with Kit. At Willow Bridge, count along the deck and place the missing planks. Finish all three spans to earn **Bridge Builder** and cross on foot to Bracken Rise.
+![The trail journal with stamps for Copperhorn, Moonkite, Ember Fox and Bellback](docs/screenshots/guardian-stamps.png)
 
-| Repair Willow Bridge | Find your way uphill |
-|---|---|
-| ![The bridge deck has two missing numbers and three planks to choose from](docs/screenshots/willow-bridge.png) | ![A creek crosses the upper trail with two footbridges leading uphill](docs/screenshots/upper-trail.png) |
-| Click a plank and its gap, drag it into place, or select both with a controller. | Cross the creek, read the trail markers, and carry supplies or secure anchors to open the climbing rope. |
-
-The Copperhorn watches the pass on Bracken Rise. Farther up, the Moonkite circles Glasswind Hollow. Each has a tell you can learn by watching. The player guide covers both fights, the two 1.2 guardians, expedition unlocks, and how to return to your save. [Read the illustrated player guide](docs/player-guide.md).
+Lost on the trail? Open the field guide with **F1**, or **Start > Field guide** on a controller. Choose **Show me the way** for ten seconds of gold trail markers. The illustrated guide covers the bridge puzzle, all four boss fights, expeditions, camp saves and the parent report. [Read the player guide](docs/player-guide.md) · [KT 1.2.2 release notes](https://github.com/creativekamrul/kt/releases/tag/v1.2.2).
 
 ## Play on Windows
 
@@ -36,7 +32,7 @@ Double-click the downloaded executable. Art, music and level data are bundled in
 | Dodge / parry in combat | Space / Q | B / X |
 | Open the journal outside combat | J | Y |
 | Pause | Esc | Start |
-| Read the field guide (1.2) | F1 | Start, then Field guide |
+| Read the field guide | F1 | Start, then Field guide |
 
 ## How the mountain adapts
 
