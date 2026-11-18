@@ -16,10 +16,13 @@ jobs:
         run: .\setup.cmd -Quick
       - name: Package the game and source
         run: .\kt.cmd package
+      - name: Test the single-file game outside the checkout
+        run: .\.venv\Scripts\python.exe tools/test_standalone.py out/KT.exe
       - uses: actions/upload-artifact@v4
         with:
           name: KT-windows-release
           path: |
+            out/KT.exe
             out/KT-*-Windows-x64.zip
             out/KT-*-Source.zip
             out/KT-*-SHA256.txt

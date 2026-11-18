@@ -39,7 +39,7 @@ def main():
         with ZipFile(stage/source.name, "w", ZIP_DEFLATED) as archive:
             for p in source_files():
                 archive.write(p, f"{PREFIX}/"+p.relative_to(ROOT).as_posix())
-        checks=[]
+        checks=[f"{hashlib.sha256((OUT/'KT.exe').read_bytes()).hexdigest()}  KT.exe\n"]
         for artifact in (binary,source):
             item=stage/artifact.name
             with ZipFile(item) as archive:

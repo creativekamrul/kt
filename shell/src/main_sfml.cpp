@@ -5,6 +5,7 @@
 #include <iostream>
 #include <filesystem>
 #include <memory>
+#include <optional>
 #include <stdexcept>
 #include <string>
 
@@ -21,6 +22,7 @@
 #include "sdp/store.hpp"
 #include "sdp/view.hpp"
 
+std::optional<std::filesystem::path> prepareStandaloneGame();
 void trailSound(const char* name);
 void trailMusic(bool enabled);
 
@@ -1171,11 +1173,20 @@ int main(int argc, char** argv) {
       if (std::string(argv[i])=="--db" && i+1<argc) db=argv[++i];
       else if (std::string(argv[i])=="--windowed") fullscreen=false;
     }
-    if(db!="sdp100.db") db=std::filesystem::absolute(db).string();
-    const auto exeDir=std::filesystem::absolute(argv[0]).parent_path();
-    for(const auto& base:{exeDir,exeDir.parent_path().parent_path()}) {
-      if(std::filesystem::exists(base/"shell/assets/climber.png") && std::filesystem::is_directory(base/"content")) {
-        std::filesystem::current_path(base); break;
+    if(db!="sdp100.db") db=std::filesystem::absolute(std::filesystem::u8path(db)).u8string();
+    auto userSave=prepareStandaloneGame();
+    if(userSave){
+      // All content reads resolve inside this version's embedded assets.
+#ifdef _WIN32
+      _putenv_s("SDP_CONTENT_DIR","content");
+#endif
+      if(db=="sdp100.db")db=userSave->u8string();
+    }else {
+      const auto exeDir=std::filesystem::absolute(argv[0]).parent_path();
+      for(const auto& base:{exeDir,exeDir.parent_path().parent_path()}) {
+        if(std::filesystem::exists(base/"shell/assets/climber.png") && std::filesystem::is_directory(base/"content")) {
+          std::filesystem::current_path(base); break;
+        }
       }
     }
     Shell shell(db, fullscreen);

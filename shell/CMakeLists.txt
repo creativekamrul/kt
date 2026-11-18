@@ -51,7 +51,7 @@ if(NOT SFML_FOUND)
   message(FATAL_ERROR "SFML 2.6 is required for --shell. Install it or clone the 2.6.2 tag into .deps/SFML.")
 endif()
 
-add_executable(sdp_shell src/main_sfml.cpp src/trail_sound.cpp)
+add_executable(sdp_shell src/main_sfml.cpp src/trail_sound.cpp src/standalone.cpp)
 if(WIN32)
   target_link_libraries(sdp_shell PRIVATE winmm)
   if(TARGET sfml-main)

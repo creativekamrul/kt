@@ -1,6 +1,6 @@
 # Start KT
 
-**Windows release.** Extract the complete Windows game ZIP to a writable folder and open `KT.exe`.
+**Windows release.** Download and double-click `KT.exe`. Your save is in `%LOCALAPPDATA%\KT\sdp100.db` unless you keep an existing portable save beside the executable.
 
 **Source checkout.** Use Python 3.13 x64 and Git on Windows. Run `setup.cmd -Quick` from the project root to install project-local tools, fetch the pinned dependency sources, build and test. Run `kt.cmd play` to launch.
 
@@ -53,6 +53,6 @@ Game and all play data remain local. KT includes original pixel scenery, animate
 
 ## Share a release
 
-Run `kt.cmd package` after building. The versioned Windows game, GitHub-ready source and SHA-256 file are written to `out`. Personal saves stay in the game folder. To move your own progress, close KT and copy `sdp100.db` separately.
+Run `kt.cmd package` after building. The versioned Windows game, GitHub-ready source and SHA-256 file are written to `out`. New standalone saves stay in your Windows user profile. To move your own progress, close KT and copy `sdp100.db` separately.
 
 The full offline university kit additionally includes the course proposal, Python, wheels and dependency sources. From that kit, `tools/pack_laptop.py` can create another offline transfer kit.

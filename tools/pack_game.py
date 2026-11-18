@@ -3,6 +3,7 @@ from pathlib import Path
 from zipfile import ZipFile, ZIP_DEFLATED
 import os
 import tempfile
+from embed_game import embed_game
 
 root = Path(__file__).resolve().parents[1]
 dest = root / "out" / "KT-Windows.zip"
@@ -28,8 +29,8 @@ for src, name in [
     files.append((src, "licenses/" + name))
 
 controls = """KT 1.0.0
-Extract the whole KT folder to a writable location and open KT.exe.
-Completed encounters and achievements save in sdp100.db beside the game.
+Double-click KT.exe to play. Saves are in %LOCALAPPDATA%/KT/sdp100.db.
+An existing sdp100.db beside KT.exe takes priority for older portable saves.
 
 Walk west from Willow Bay plaza to repair Willow Bridge. Cross to the west
 bank and follow the gold marker to Bracken Rise. Choose the fern switchbacks
@@ -57,14 +58,15 @@ The game uses SFML, FreeType, SQLite, and nlohmann/json. FreeType is
 copyright The FreeType Project. See licenses for third-party notices.
 """
 dest.parent.mkdir(exist_ok=True)
-with tempfile.NamedTemporaryFile(dir=dest.parent, suffix=".zip", delete=False) as tmp:
-    stage = Path(tmp.name)
-try:
+with tempfile.TemporaryDirectory(dir=dest.parent) as folder:
+    package = Path(folder) / "KT.exe"
+    resources = {name: path.read_bytes() for path, name in files if path != exe}
+    resources["PLAY.txt"] = controls.encode("utf-8")
+    embed_game(exe, package, resources)
+    stage = Path(folder) / dest.name
     with ZipFile(stage, "w", ZIP_DEFLATED) as archive:
-        for path, name in files:
-            archive.write(path, "KT/" + name)
-        archive.writestr("KT/PLAY.txt", controls)
+        archive.write(package, "KT/KT.exe")
+    os.replace(package, dest.parent / "KT.exe")
     os.replace(stage, dest)
-finally:
-    stage.unlink(missing_ok=True)
+print(dest.parent / "KT.exe")
 print(dest)

@@ -6,7 +6,7 @@
 
 ## Play
 
-Extract the entire `KT-1.0.0-Windows-x64.zip` into a writable folder and open `KT.exe`. The game starts full-screen. **F11** switches to a window. Your progress lives in `sdp100.db` beside the executable. To carry a save forward, close the game and copy the database into the newly extracted release.
+Download [KT.exe for Windows x64](https://github.com/creativekamrul/kt/releases/latest/download/KT.exe) and double-click it. The game starts full-screen. **F11** switches to a window. Art, music and level data are embedded in the executable. KT prepares its assets and stores your progress under `%LOCALAPPDATA%\KT`. To continue an older portable save, close the game and place its `sdp100.db` beside the new executable.
 
 | Action | Keyboard | Xbox-layout controller |
 |---|---|---|
@@ -41,7 +41,7 @@ On 64-bit Windows, install Python 3.13 x64 and Git and make both available on PA
 
 Setup installs project-local tools and fetches the pinned SFML 2.6.2 and FreeType 2.13.3 source commits. The build uses C++17, Zig 0.13.0, CMake and Ninja. The separate offline laptop kit includes its own Python, wheels and dependency source. Running `setup.cmd` without `-Quick` also reproduces the simulation baselines and charts.
 
-Packaging creates a Windows game ZIP, a clean source ZIP and SHA-256 checksums under `out/`. The GitHub Actions workflow runs the Windows build and tests and uploads those files as workflow artifacts. Players need only the Windows game ZIP.
+Packaging creates the standalone `KT.exe`, an optional Windows ZIP, a clean source ZIP and SHA-256 checksums under `out/`. The GitHub Actions workflow runs the Windows build and tests and uploads those files as workflow artifacts. Players need only `KT.exe`.
 
 ## Project layout
 
