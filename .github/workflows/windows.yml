@@ -32,11 +32,15 @@ jobs:
         run: .\kt.cmd package
       - name: Test the single-file game outside the checkout
         run: .\.venv\Scripts\python.exe tools/test_standalone.py out/KT.exe
+      - name: Build the Windows installer
+        if: hashFiles('tools/build-installer.ps1') != ''
+        run: .\tools\build-installer.ps1
       - uses: actions/upload-artifact@v4
         with:
           name: KT-windows-release
           path: |
             out/KT.exe
+            out/KT-Setup.exe
             out/KT-*-Windows-x64.zip
             out/KT-*-Source.zip
             out/KT-*-SHA256.txt

@@ -2,7 +2,7 @@
 
 KT is an offline pixel-art mountain adventure for Windows. Your first landmark is a broken footbridge west of Willow Bay. Repair it, pick a path through the foothills, and learn when to dodge, parry, or strike. Beyond the guardians, every solved trail encounter takes you closer to the summit flag at altitude 90.
 
-**[Download KT.exe for Windows x64](https://github.com/creativekamrul/kt/releases/latest/download/KT.exe)** · [Player guide and boss screenshots](docs/player-guide.md) · [Build from source](#build-from-source)
+**[Install KT for Windows x64](https://github.com/creativekamrul/kt/releases/latest/download/KT-Setup.exe)** · [Portable KT.exe](https://github.com/creativekamrul/kt/releases/latest/download/KT.exe) · [Player guide and boss screenshots](docs/player-guide.md) · [Build from source](#build-from-source)
 
 ## What's new in KT 1.2.2
 
@@ -23,7 +23,9 @@ Lost on the trail? Open the field guide with **F1**, or **Start > Field guide** 
 
 ## Play on Windows
 
-Double-click the downloaded executable. Art, music and level data are bundled inside. KT starts full-screen. Press **F11** to switch to a window. Saves live in `%LOCALAPPDATA%\KT`. For an older portable save, close KT and place its `sdp100.db` beside the executable.
+Run **KT-Setup.exe**, then open **KT** from Start. During setup you can also select **Create a Play KT shortcut on my desktop**. To uninstall, open **Settings > Apps > Installed apps > KT**. Your saved climbers stay on this Windows account.
+
+If you prefer the portable download, double-click **KT.exe**. Art, music and level data are bundled inside. KT starts full-screen. Press **F11** to switch to a window. Saves live in `%LOCALAPPDATA%\KT`. For an older portable save, close KT and place its `sdp100.db` beside the executable.
 
 | Action | Keyboard | Xbox-layout controller |
 |---|---|---|
@@ -53,7 +55,7 @@ On 64-bit Windows, install Python 3.13 x64 and Git and make both available on PA
 
 Setup installs project-local tools and fetches the pinned SFML 2.6.2 and FreeType 2.13.3 source commits. The build uses C++17, Zig 0.13.0, CMake and Ninja. The separate offline laptop kit includes its own Python, wheels and dependency source. Running `setup.cmd` without `-Quick` also reproduces the simulation baselines and charts.
 
-Packaging creates the standalone `KT.exe`, an optional Windows ZIP, a clean source ZIP and SHA-256 checksums under `out/`. The GitHub Actions workflow runs the Windows build and tests and uploads those files as workflow artifacts. Players need only `KT.exe`.
+Packaging creates the standalone `KT.exe`, an optional Windows ZIP, a clean source ZIP and SHA-256 checksums under `out/`. The GitHub Actions workflow runs the Windows build and tests and uploads those files as workflow artifacts. To build the installer locally, install Inno Setup 6 and run `.\tools\build-installer.ps1` after packaging.
 
 ## Project layout
 
