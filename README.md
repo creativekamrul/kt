@@ -1,32 +1,47 @@
 # KT
 
-**Version 1.0.0 for Windows x64.** KT is an offline pixel-art climbing game. Walk out of Willow Bay, repair the bridge, learn two mountain guardians' attacks, and carry the summit flag to altitude 90. The upper trails generate encounters from your local progress.
+KT is an offline pixel-art mountain adventure for Windows. Your first landmark is a broken footbridge west of Willow Bay. Repair it, pick a path through the foothills, and learn when to dodge, parry, or strike. Beyond the guardians, every solved trail encounter takes you closer to the summit flag at altitude 90.
 
-![The Mirror Pools and Bell Gallery in Glasswind Hollow](docs/figures/glasswind-hollow.png)
+**[Download KT.exe for Windows x64](https://github.com/creativekamrul/kt/releases/latest/download/KT.exe)** · [Player guide and boss screenshots](docs/player-guide.md) · [Build from source](#build-from-source)
 
-## Play
+![A climber in Willow Bay plaza, with gold arrows pointing west toward the bridge](docs/screenshots/willow-bay.png)
 
-Download [KT.exe for Windows x64](https://github.com/creativekamrul/kt/releases/latest/download/KT.exe) and double-click it. The game starts full-screen. **F11** switches to a window. Art, music and level data are embedded in the executable. KT prepares its assets and stores your progress under `%LOCALAPPDATA%\KT`. To continue an older portable save, close the game and place its `sdp100.db` beside the new executable.
+### Which version can I play?
+
+| Build | What you can play |
+|---|---|
+| [Published release 1.0.0](https://github.com/creativekamrul/kt/releases/tag/v1.0.0) | The complete climb from Willow Bay to the summit, two guardians, bridge repair, village errands, adaptive trails and four expeditions. |
+| Development build 1.2.0 | Adds the Ember Fox and Bellback Tortoise, brighter scenery, a field guide, per-climber camp saves and a parent report. The screenshots on this page and in the guide come from this build. |
+
+## Your first climb
+
+Follow the gold arrows west. You can stop to talk with Nia the florist, deliver creek bells to Sol, or practice parrying with Kit. At Willow Bridge, count along the deck and place the missing planks. Finish all three spans to earn **Bridge Builder** and cross on foot to Bracken Rise.
+
+| Repair Willow Bridge | Find your way uphill |
+|---|---|
+| ![The bridge deck has two missing numbers and three planks to choose from](docs/screenshots/willow-bridge.png) | ![A creek crosses the upper trail with two footbridges leading uphill](docs/screenshots/upper-trail.png) |
+| Click a plank and its gap, drag it into place, or select both with a controller. | Cross the creek, read the trail markers, and carry supplies or secure anchors to open the climbing rope. |
+
+The Copperhorn watches the pass on Bracken Rise. Farther up, the Moonkite circles Glasswind Hollow. Each has a tell you can learn by watching. The player guide covers both fights, the two development-build guardians, expedition unlocks, and how to return to your save. [Read the illustrated player guide](docs/player-guide.md).
+
+## Play on Windows
+
+Double-click the downloaded executable. Art, music and level data are bundled inside. KT starts full-screen. Press **F11** to switch to a window. Saves live in `%LOCALAPPDATA%\KT`. For an older portable save, close KT and place its `sdp100.db` beside the executable.
 
 | Action | Keyboard | Xbox-layout controller |
 |---|---|---|
-| Walk or choose a menu item | WASD or arrows to walk, arrows in menus | Left stick or D-pad |
+| Walk or navigate menus | WASD or arrow keys to walk, arrows in menus | Left stick or D-pad |
 | Talk, inspect, strike, raise the flag | E | A |
-| Dodge on the mountain | Space | B |
-| Parry on the mountain | Q | X |
-| Journal outside combat | J | Y |
+| Dodge / parry in combat | Space / Q | B / X |
+| Open the journal outside combat | J | Y |
 | Pause | Esc | Start |
+| Read the field guide (1.2) | F1 | Start, then Field guide |
 
-At Willow Bridge you can drag a plank, click it and then its gap, or use the controller to select both.
+## How the mountain adapts
 
-## The climb
+Willow Bay, the bridge and the guardian arenas have fixed layouts, so landmarks and attack cues stay familiar. On the upper mountain, the adaptive controller uses saved answers to select the next skill and difficulty. The level generator then creates a seeded encounter. For example, a supply task turns a numerical answer into a bundle you must find and carry back to camp.
 
-- **Willow Bay.** Follow gold arrows to the bridge. Nia's creek bells, Sol's pennant and Kit's wind-moth practice are optional stops.
-- **Bracken Rise.** Fern Switchback gives an extra heart. Cairn Steps makes a successful parry last longer. Learn the copperhorn's charge and ground ripple.
-- **Glasswind Hollow.** Inspect a mirror pool for a ward or ring a gallery bell for a longer opening. Reflect the moonkite's gold feather, dodge its falling shadows, and counter when it lands.
-- **Upper mountain.** Cross creeks, carry supplies, rig ropes and choose routes. Generated encounters adapt as you climb. Expeditions unlock at altitudes 10, 30 and 60. At 90, walk the last ridge, raise the flag and return home.
-
-Guardian victories, completed encounters, bridge repairs and errands save locally. The north pass in Willow Bay takes you back to the latest unlocked region. An unfinished fight restarts at full health.
+The difficulty policy uses Thompson sampling. It samples a plausible ability from its current estimate, then picks a difficulty with a predicted chance of success near 75%. The next answer updates the estimate. A wrong answer leaves your altitude intact. The simulation results below show how this behaves with modeled players. [Adaptive engine notes](docs/adaptive-engine.md) · [Architecture](docs/architecture.md).
 
 ## Build from source
 
