@@ -1,0 +1,3 @@
+SQLite amalgamation 3530400
+Source: https://www.sqlite.org/2026/sqlite-amalgamation-3530400.zip
+Public domain (https://www.sqlite.org/copyright.html)

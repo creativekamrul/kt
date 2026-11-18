@@ -1,0 +1,6 @@
+# Local Windows build and simulation-plotting tools; not game runtime dependencies.
+cmake==4.4.4
+ninja==1.13.2
+ziglang==0.13.0
+matplotlib==3.11.2
+numpy==2.5.4

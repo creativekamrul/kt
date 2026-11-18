@@ -1,0 +1,1327 @@
+{
+  "landmark_interval": 10,
+  "review_interval": 5,
+  "schema": 1,
+  "session_length": 10,
+  "skills": [
+    {
+      "display_key": "skill.math.counting",
+      "domain": "math",
+      "id": "math.counting",
+      "quiz_bank": "",
+      "template": "math.counting",
+      "tiers": [
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.0,
+          "distractor_count": 3,
+          "max_value": 10,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 0,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.09090909090909091,
+          "distractor_count": 3,
+          "max_value": 18,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 1,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.18181818181818182,
+          "distractor_count": 3,
+          "max_value": 26,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 2,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.2727272727272727,
+          "distractor_count": 3,
+          "max_value": 35,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 3,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.36363636363636365,
+          "distractor_count": 3,
+          "max_value": 43,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 4,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.45454545454545453,
+          "distractor_count": 3,
+          "max_value": 51,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 5,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.5454545454545454,
+          "distractor_count": 3,
+          "max_value": 59,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 6,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.6363636363636364,
+          "distractor_count": 3,
+          "max_value": 67,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 7,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.7272727272727273,
+          "distractor_count": 3,
+          "max_value": 75,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 8,
+          "time_limit_ms": 16909
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.8181818181818182,
+          "distractor_count": 3,
+          "max_value": 84,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 9,
+          "time_limit_ms": 15273
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.9090909090909091,
+          "distractor_count": 3,
+          "max_value": 92,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 10,
+          "time_limit_ms": 13636
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 1.0,
+          "distractor_count": 3,
+          "max_value": 100,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 11,
+          "time_limit_ms": 12000
+        }
+      ]
+    },
+    {
+      "display_key": "skill.math.addition",
+      "domain": "math",
+      "id": "math.addition",
+      "quiz_bank": "",
+      "template": "math.addition",
+      "tiers": [
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.0,
+          "distractor_count": 3,
+          "max_value": 5,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 0,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.09090909090909091,
+          "distractor_count": 3,
+          "max_value": 10,
+          "min_value": 2,
+          "operand_count": 2,
+          "tier": 1,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.18181818181818182,
+          "distractor_count": 3,
+          "max_value": 15,
+          "min_value": 3,
+          "operand_count": 2,
+          "tier": 2,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.2727272727272727,
+          "distractor_count": 3,
+          "max_value": 20,
+          "min_value": 3,
+          "operand_count": 2,
+          "tier": 3,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": true,
+          "difficulty": 0.36363636363636365,
+          "distractor_count": 3,
+          "max_value": 25,
+          "min_value": 4,
+          "operand_count": 2,
+          "tier": 4,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": true,
+          "difficulty": 0.45454545454545453,
+          "distractor_count": 3,
+          "max_value": 30,
+          "min_value": 5,
+          "operand_count": 2,
+          "tier": 5,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": true,
+          "difficulty": 0.5454545454545454,
+          "distractor_count": 3,
+          "max_value": 35,
+          "min_value": 6,
+          "operand_count": 3,
+          "tier": 6,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": true,
+          "difficulty": 0.6363636363636364,
+          "distractor_count": 3,
+          "max_value": 40,
+          "min_value": 7,
+          "operand_count": 3,
+          "tier": 7,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": true,
+          "difficulty": 0.7272727272727273,
+          "distractor_count": 3,
+          "max_value": 45,
+          "min_value": 8,
+          "operand_count": 3,
+          "tier": 8,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": true,
+          "difficulty": 0.8181818181818182,
+          "distractor_count": 3,
+          "max_value": 50,
+          "min_value": 8,
+          "operand_count": 3,
+          "tier": 9,
+          "time_limit_ms": 15273
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": true,
+          "difficulty": 0.9090909090909091,
+          "distractor_count": 3,
+          "max_value": 55,
+          "min_value": 9,
+          "operand_count": 3,
+          "tier": 10,
+          "time_limit_ms": 13636
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": true,
+          "difficulty": 1.0,
+          "distractor_count": 3,
+          "max_value": 60,
+          "min_value": 10,
+          "operand_count": 3,
+          "tier": 11,
+          "time_limit_ms": 12000
+        }
+      ]
+    },
+    {
+      "display_key": "skill.math.subtraction",
+      "domain": "math",
+      "id": "math.subtraction",
+      "quiz_bank": "",
+      "template": "math.subtraction",
+      "tiers": [
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.0,
+          "distractor_count": 3,
+          "max_value": 5,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 0,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.09090909090909091,
+          "distractor_count": 3,
+          "max_value": 10,
+          "min_value": 2,
+          "operand_count": 2,
+          "tier": 1,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.18181818181818182,
+          "distractor_count": 3,
+          "max_value": 15,
+          "min_value": 3,
+          "operand_count": 2,
+          "tier": 2,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.2727272727272727,
+          "distractor_count": 3,
+          "max_value": 20,
+          "min_value": 3,
+          "operand_count": 2,
+          "tier": 3,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": true,
+          "difficulty": 0.36363636363636365,
+          "distractor_count": 3,
+          "max_value": 25,
+          "min_value": 4,
+          "operand_count": 2,
+          "tier": 4,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": true,
+          "allow_carry": true,
+          "difficulty": 0.45454545454545453,
+          "distractor_count": 3,
+          "max_value": 30,
+          "min_value": 5,
+          "operand_count": 2,
+          "tier": 5,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": true,
+          "allow_carry": true,
+          "difficulty": 0.5454545454545454,
+          "distractor_count": 3,
+          "max_value": 35,
+          "min_value": 6,
+          "operand_count": 3,
+          "tier": 6,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": true,
+          "allow_carry": true,
+          "difficulty": 0.6363636363636364,
+          "distractor_count": 3,
+          "max_value": 40,
+          "min_value": 7,
+          "operand_count": 3,
+          "tier": 7,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": true,
+          "allow_carry": true,
+          "difficulty": 0.7272727272727273,
+          "distractor_count": 3,
+          "max_value": 45,
+          "min_value": 8,
+          "operand_count": 3,
+          "tier": 8,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": true,
+          "allow_carry": true,
+          "difficulty": 0.8181818181818182,
+          "distractor_count": 3,
+          "max_value": 50,
+          "min_value": 8,
+          "operand_count": 3,
+          "tier": 9,
+          "time_limit_ms": 15273
+        },
+        {
+          "allow_borrow": true,
+          "allow_carry": true,
+          "difficulty": 0.9090909090909091,
+          "distractor_count": 3,
+          "max_value": 55,
+          "min_value": 9,
+          "operand_count": 3,
+          "tier": 10,
+          "time_limit_ms": 13636
+        },
+        {
+          "allow_borrow": true,
+          "allow_carry": true,
+          "difficulty": 1.0,
+          "distractor_count": 3,
+          "max_value": 60,
+          "min_value": 10,
+          "operand_count": 3,
+          "tier": 11,
+          "time_limit_ms": 12000
+        }
+      ]
+    },
+    {
+      "display_key": "skill.logic.patterns",
+      "domain": "problem_solving",
+      "id": "logic.patterns",
+      "quiz_bank": "",
+      "template": "logic.patterns",
+      "tiers": [
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.0,
+          "distractor_count": 3,
+          "max_value": 10,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 0,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.09090909090909091,
+          "distractor_count": 3,
+          "max_value": 14,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 1,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.18181818181818182,
+          "distractor_count": 3,
+          "max_value": 17,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 2,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.2727272727272727,
+          "distractor_count": 3,
+          "max_value": 21,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 3,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.36363636363636365,
+          "distractor_count": 3,
+          "max_value": 25,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 4,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.45454545454545453,
+          "distractor_count": 3,
+          "max_value": 28,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 5,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.5454545454545454,
+          "distractor_count": 4,
+          "max_value": 32,
+          "min_value": 2,
+          "operand_count": 2,
+          "tier": 6,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.6363636363636364,
+          "distractor_count": 4,
+          "max_value": 35,
+          "min_value": 2,
+          "operand_count": 2,
+          "tier": 7,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.7272727272727273,
+          "distractor_count": 4,
+          "max_value": 39,
+          "min_value": 2,
+          "operand_count": 2,
+          "tier": 8,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.8181818181818182,
+          "distractor_count": 4,
+          "max_value": 43,
+          "min_value": 2,
+          "operand_count": 2,
+          "tier": 9,
+          "time_limit_ms": 15273
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.9090909090909091,
+          "distractor_count": 4,
+          "max_value": 46,
+          "min_value": 2,
+          "operand_count": 2,
+          "tier": 10,
+          "time_limit_ms": 13636
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 1.0,
+          "distractor_count": 4,
+          "max_value": 50,
+          "min_value": 2,
+          "operand_count": 2,
+          "tier": 11,
+          "time_limit_ms": 12000
+        }
+      ]
+    },
+    {
+      "display_key": "skill.logic.odd_one_out",
+      "domain": "problem_solving",
+      "id": "logic.odd_one_out",
+      "quiz_bank": "",
+      "template": "logic.odd_one_out",
+      "tiers": [
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.0,
+          "distractor_count": 3,
+          "max_value": 20,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 0,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.09090909090909091,
+          "distractor_count": 3,
+          "max_value": 27,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 1,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.18181818181818182,
+          "distractor_count": 3,
+          "max_value": 35,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 2,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.2727272727272727,
+          "distractor_count": 3,
+          "max_value": 42,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 3,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.36363636363636365,
+          "distractor_count": 3,
+          "max_value": 49,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 4,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.45454545454545453,
+          "distractor_count": 3,
+          "max_value": 56,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 5,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.5454545454545454,
+          "distractor_count": 4,
+          "max_value": 64,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 6,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.6363636363636364,
+          "distractor_count": 4,
+          "max_value": 71,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 7,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.7272727272727273,
+          "distractor_count": 4,
+          "max_value": 78,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 8,
+          "time_limit_ms": 16909
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.8181818181818182,
+          "distractor_count": 4,
+          "max_value": 85,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 9,
+          "time_limit_ms": 15273
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.9090909090909091,
+          "distractor_count": 4,
+          "max_value": 93,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 10,
+          "time_limit_ms": 13636
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 1.0,
+          "distractor_count": 4,
+          "max_value": 100,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 11,
+          "time_limit_ms": 12000
+        }
+      ]
+    },
+    {
+      "display_key": "skill.logic.ordering",
+      "domain": "problem_solving",
+      "id": "logic.ordering",
+      "quiz_bank": "",
+      "template": "logic.ordering",
+      "tiers": [
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.0,
+          "distractor_count": 2,
+          "max_value": 20,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 0,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.09090909090909091,
+          "distractor_count": 2,
+          "max_value": 27,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 1,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.18181818181818182,
+          "distractor_count": 2,
+          "max_value": 35,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 2,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.2727272727272727,
+          "distractor_count": 3,
+          "max_value": 42,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 3,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.36363636363636365,
+          "distractor_count": 3,
+          "max_value": 49,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 4,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.45454545454545453,
+          "distractor_count": 3,
+          "max_value": 56,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 5,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.5454545454545454,
+          "distractor_count": 3,
+          "max_value": 64,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 6,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.6363636363636364,
+          "distractor_count": 3,
+          "max_value": 71,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 7,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.7272727272727273,
+          "distractor_count": 3,
+          "max_value": 78,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 8,
+          "time_limit_ms": 16909
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.8181818181818182,
+          "distractor_count": 4,
+          "max_value": 85,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 9,
+          "time_limit_ms": 15273
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.9090909090909091,
+          "distractor_count": 4,
+          "max_value": 93,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 10,
+          "time_limit_ms": 13636
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 1.0,
+          "distractor_count": 4,
+          "max_value": 100,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 11,
+          "time_limit_ms": 12000
+        }
+      ]
+    },
+    {
+      "display_key": "skill.quiz.animals",
+      "domain": "quiz",
+      "id": "quiz.animals",
+      "quiz_bank": "animals",
+      "template": "quiz.bank",
+      "tiers": [
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.0,
+          "distractor_count": 3,
+          "max_value": 1,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 0,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.09090909090909091,
+          "distractor_count": 3,
+          "max_value": 1,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 1,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.18181818181818182,
+          "distractor_count": 3,
+          "max_value": 1,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 2,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.2727272727272727,
+          "distractor_count": 3,
+          "max_value": 1,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 3,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.36363636363636365,
+          "distractor_count": 3,
+          "max_value": 1,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 4,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.45454545454545453,
+          "distractor_count": 3,
+          "max_value": 1,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 5,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.5454545454545454,
+          "distractor_count": 3,
+          "max_value": 1,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 6,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.6363636363636364,
+          "distractor_count": 3,
+          "max_value": 1,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 7,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.7272727272727273,
+          "distractor_count": 3,
+          "max_value": 1,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 8,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.8181818181818182,
+          "distractor_count": 3,
+          "max_value": 1,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 9,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.9090909090909091,
+          "distractor_count": 3,
+          "max_value": 1,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 10,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 1.0,
+          "distractor_count": 3,
+          "max_value": 1,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 11,
+          "time_limit_ms": 0
+        }
+      ]
+    },
+    {
+      "display_key": "skill.quiz.science",
+      "domain": "quiz",
+      "id": "quiz.science",
+      "quiz_bank": "science",
+      "template": "quiz.bank",
+      "tiers": [
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.0,
+          "distractor_count": 3,
+          "max_value": 1,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 0,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.09090909090909091,
+          "distractor_count": 3,
+          "max_value": 1,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 1,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.18181818181818182,
+          "distractor_count": 3,
+          "max_value": 1,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 2,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.2727272727272727,
+          "distractor_count": 3,
+          "max_value": 1,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 3,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.36363636363636365,
+          "distractor_count": 3,
+          "max_value": 1,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 4,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.45454545454545453,
+          "distractor_count": 3,
+          "max_value": 1,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 5,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.5454545454545454,
+          "distractor_count": 3,
+          "max_value": 1,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 6,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.6363636363636364,
+          "distractor_count": 3,
+          "max_value": 1,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 7,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.7272727272727273,
+          "distractor_count": 3,
+          "max_value": 1,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 8,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.8181818181818182,
+          "distractor_count": 3,
+          "max_value": 1,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 9,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.9090909090909091,
+          "distractor_count": 3,
+          "max_value": 1,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 10,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 1.0,
+          "distractor_count": 3,
+          "max_value": 1,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 11,
+          "time_limit_ms": 0
+        }
+      ]
+    },
+    {
+      "display_key": "skill.quiz.safety",
+      "domain": "quiz",
+      "id": "quiz.safety",
+      "quiz_bank": "safety",
+      "template": "quiz.bank",
+      "tiers": [
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.0,
+          "distractor_count": 3,
+          "max_value": 1,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 0,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.09090909090909091,
+          "distractor_count": 3,
+          "max_value": 1,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 1,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.18181818181818182,
+          "distractor_count": 3,
+          "max_value": 1,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 2,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.2727272727272727,
+          "distractor_count": 3,
+          "max_value": 1,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 3,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.36363636363636365,
+          "distractor_count": 3,
+          "max_value": 1,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 4,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.45454545454545453,
+          "distractor_count": 3,
+          "max_value": 1,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 5,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.5454545454545454,
+          "distractor_count": 3,
+          "max_value": 1,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 6,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.6363636363636364,
+          "distractor_count": 3,
+          "max_value": 1,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 7,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.7272727272727273,
+          "distractor_count": 3,
+          "max_value": 1,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 8,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.8181818181818182,
+          "distractor_count": 3,
+          "max_value": 1,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 9,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 0.9090909090909091,
+          "distractor_count": 3,
+          "max_value": 1,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 10,
+          "time_limit_ms": 0
+        },
+        {
+          "allow_borrow": false,
+          "allow_carry": false,
+          "difficulty": 1.0,
+          "distractor_count": 3,
+          "max_value": 1,
+          "min_value": 1,
+          "operand_count": 2,
+          "tier": 11,
+          "time_limit_ms": 0
+        }
+      ]
+    }
+  ],
+  "zones": [
+    {
+      "altitude_end": 30,
+      "altitude_start": 0,
+      "display_key": "zone.forest",
+      "id": 0,
+      "key": "forest",
+      "palette": "forest",
+      "unlocks": [
+        "math.counting",
+        "math.addition",
+        "logic.patterns",
+        "quiz.animals"
+      ]
+    },
+    {
+      "altitude_end": 60,
+      "altitude_start": 30,
+      "display_key": "zone.rocky",
+      "id": 1,
+      "key": "rocky",
+      "palette": "rocky",
+      "unlocks": [
+        "math.subtraction",
+        "logic.odd_one_out",
+        "quiz.science"
+      ]
+    },
+    {
+      "altitude_end": 90,
+      "altitude_start": 60,
+      "display_key": "zone.snowline",
+      "id": 2,
+      "key": "snowline",
+      "palette": "snowline",
+      "unlocks": [
+        "logic.ordering",
+        "quiz.safety"
+      ]
+    },
+    {
+      "altitude_end": 0,
+      "altitude_start": 90,
+      "display_key": "zone.summit",
+      "id": 3,
+      "key": "summit",
+      "palette": "summit",
+      "unlocks": []
+    }
+  ]
+}

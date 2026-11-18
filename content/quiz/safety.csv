@@ -1,0 +1,13 @@
+prompt,answer,distractor1,distractor2,distractor3,hint,tier_min,tier_max
+"What do you do before crossing a street?",look both ways,run fast,close your eyes,call a friend,"Stop, look and listen.",0,3
+"What should you wear on a bike?",a helmet,a hat,sunglasses,a scarf,"It protects your head.",0,3
+"Should you touch a hot pan?",no,yes,only quickly,only with a fork,"It will burn you.",0,3
+"What should you do before eating?",wash your hands,wipe them on your shirt,jump three times,sing a song,"Use soap and water.",0,3
+"What do you wear in a car?",a seatbelt,a backpack,a helmet,gloves,"Click it every time.",0,3
+"What number do you call in an emergency?",112,555,12345,411,"Ask a grown-up to show you.",4,7
+"What do you do if a stranger offers you a ride?",say no and tell a trusted adult,say yes,get in quietly,ask for money,"Always tell a grown-up you trust.",4,7
+"Where is it safe to swim?",where a lifeguard is watching,alone in a river,in a storm,anywhere,"Someone should watch you.",4,7
+"How often should you brush your teeth?",twice a day,once a month,once a year,never,"Morning and night.",4,7
+"What do you do if you get lost in a shop?",stay put and ask a shop worker,run outside,hide,wait by the door,"Do not wander off.",4,7
+"What do you do if your clothes catch fire?",stop drop and roll,run quickly,jump up and down,wave your arms,"Three quick actions.",8,11
+"What should you do if you smell gas at home?",tell an adult and leave,light a match,open the oven,ignore it,"Never make a spark.",8,11

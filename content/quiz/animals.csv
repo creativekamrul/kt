@@ -1,0 +1,13 @@
+prompt,answer,distractor1,distractor2,distractor3,hint,tier_min,tier_max
+"Which animal says moo?",cow,dog,cat,duck,"Cows give us milk.",0,3
+"Which animal can fly?",bird,fish,frog,snake,"It has wings.",0,3
+"Which animal lives in water?",fish,lion,camel,owl,"It has fins.",0,3
+"How many legs does a spider have?",8,6,4,10,"Count them twice.",0,3
+"Which animal is the tallest?",giraffe,elephant,bear,horse,"Look at its long neck.",4,7
+"Which animal sleeps upside down?",bat,cat,mouse,rabbit,"It flies at night.",4,7
+"Which animal carries its baby in a pouch?",kangaroo,goat,deer,camel,"It hops.",4,7
+"Which animal has a long trunk?",elephant,giraffe,zebra,hippo,"It is the largest land animal.",4,7
+"Which animal is a mammal that lays eggs?",platypus,penguin,shark,crocodile,"It lives in Australia.",8,11
+"Which animal can regrow a lost arm?",starfish,crab,octopus,whale,"It lives on the sea floor.",8,11
+"Which animal turns into a butterfly?",caterpillar,beetle,worm,ant,"It spins a cocoon.",8,11
+"Which animal is the fastest on land?",cheetah,lion,horse,deer,"It has spots.",8,11

@@ -1,0 +1,13 @@
+prompt,answer,distractor1,distractor2,distractor3,hint,tier_min,tier_max
+"How many days are in a week?",7,5,10,12,"Count Monday to Sunday.",0,3
+"What do plants need to make food?",sunlight,moonlight,sand,plastic,"It comes from the sky.",0,3
+"Which planet do we live on?",Earth,Mars,Venus,Jupiter,"It is blue and green.",0,3
+"How many minutes are in an hour?",60,30,100,90,"Half of it is thirty.",0,3
+"Which body part pumps blood?",heart,lungs,liver,brain,"It beats.",0,3
+"How many sides does a triangle have?",3,4,5,6,"Count them.",0,3
+"Which planet is closest to the Sun?",Mercury,Venus,Earth,Mars,"It is the smallest planet too.",4,7
+"What does a thermometer measure?",temperature,weight,length,speed,"Hot and cold.",4,7
+"Which gas do we breathe in to live?",oxygen,helium,neon,hydrogen,"Trees make it.",4,7
+"How many legs does an insect have?",6,4,8,10,"Spiders are not insects.",4,7
+"What force pulls us down to the ground?",gravity,magnetism,friction,wind,"It keeps the Moon in orbit.",8,11
+"What is water made of?",hydrogen and oxygen,carbon and oxygen,nitrogen and oxygen,iron and oxygen,"Two gases join together.",8,11

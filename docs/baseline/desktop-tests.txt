@@ -1,0 +1,94 @@
+
+[view]
+  pass   marker_starts_at_the_bottom_of_a_zone_and_climbs
+  pass   progress_is_monotone_across_every_zone
+  pass   the_final_zone_still_moves
+  pass   button_layout_is_ordered_and_never_overlaps
+  pass   scene_flow_follows_the_session
+  pass   retry_decision_at_the_end_of_a_session_ends_the_day
+  pass   scene_names_are_stable_and_unique
+
+[session]
+  pass   a_day_of_climbing_logs_every_attempt
+  pass   wrong_answers_never_lower_altitude
+  pass   a_wrong_answer_offers_an_easier_retry_on_the_same_skill
+  pass   retries_never_cascade
+  pass   an_offered_retry_can_be_declined
+  pass   retries_can_be_disabled
+  pass   whole_sessions_are_reproducible
+  pass   a_session_resumes_from_sqlite_after_a_restart
+  pass   warmup_gestures_are_gentle_for_a_brand_new_child
+
+[content]
+  pass   shipped_curriculum_loads_and_validates
+  pass   quiz_banks_load_from_csv
+  pass   csv_parser_handles_quotes_commas_and_comments
+  pass   missing_files_degrade_to_shipped_defaults
+  pass   content_directory_wires_quiz_banks_into_the_generator
+  pass   strings_table_uses_keys_with_fallbacks
+  pass   exported_curriculum_round_trips
+
+[progression]
+  pass   one_solved_problem_is_exactly_one_step
+  pass   wrong_answers_are_a_complete_no_op
+  pass   landmarks_appear_every_ten_steps
+  pass   zone_boundaries_are_checkpoints_and_badges
+  pass   milestones_are_ordered_and_deduplicated
+
+[store]
+  pass   memory_store_behaves_like_the_real_thing
+  pass   sqlite_in_memory_database
+  pass   sqlite_file_database_survives_reopen
+  pass   seven_day_window_excludes_old_attempts
+
+[generator]
+  pass   every_sampled_spec_is_well_formed
+  pass   generation_is_deterministic
+  pass   different_seeds_give_different_puzzles
+  pass   addition_answers_are_arithmetically_correct
+  pass   subtraction_answers_are_arithmetically_correct
+  pass   patterns_follow_an_arithmetic_rule
+  pass   checkpoint_bosses_mix_addition_and_subtraction
+  pass   quiz_bank_rows_are_used
+  pass   unknown_template_degrades_gracefully
+  pass   text_options_never_duplicate_the_answer
+
+[engine]
+  pass   next_level_respects_the_documented_contract
+  pass   identical_history_yields_identical_levels
+  pass   replay_from_the_log_equals_incremental_folding
+  pass   altitude_counts_solved_problems_only
+  pass   the_configured_policy_is_actually_applied
+  pass   practice_is_spread_across_sub_skills
+  pass   zone_boundary_produces_a_checkpoint
+  pass   spaced_review_is_interleaved
+  pass   retry_is_never_harder_than_the_failed_tier
+  pass   skill_states_reflect_evidence
+  pass   resume_from_stored_states_is_usable
+
+[curriculum]
+  pass   default_curriculum_is_consistent
+
+[bandit]
+  pass   beta_posterior_updates_correctly
+  pass   discounted_updates_forget_old_evidence
+  pass   prior_decays_with_tier
+  pass   selection_is_deterministic_for_a_seed
+  pass   forbidden_tier_is_never_selected
+  pass   static_policy_never_moves
+  pass   out_of_range_observe_is_ignored
+  pass   converges_into_flow_zone_for_every_ability
+  pass   static_difficulty_fails_weak_and_bores_strong
+
+[rng]
+  pass   same_seed_same_stream
+  pass   doubles_stay_in_unit_interval
+  pass   double_uniformity
+  pass   int_bounds_are_inclusive_and_covered
+  pass   shuffle_is_a_permutation
+  pass   gamma_mean_matches_shape_times_scale
+  pass   gamma_supports_small_shapes
+  pass   beta_mean_and_support
+  pass   derive_seed_is_stable_and_sensitive
+
+72 passed, 0 failed, 49671 checks

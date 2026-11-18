@@ -1,0 +1,22 @@
+{
+  "zone.forest": "the forest",
+  "zone.rocky": "the rocky slopes",
+  "zone.snowline": "the snowline",
+  "zone.summit": "the summit",
+  "skill.math.counting": "Counting",
+  "skill.math.addition": "Adding",
+  "skill.math.subtraction": "Taking away",
+  "skill.logic.patterns": "Patterns",
+  "skill.logic.odd_one_out": "Odd one out",
+  "skill.logic.ordering": "Comparing",
+  "skill.quiz.animals": "Animals",
+  "skill.quiz.science": "Science",
+  "skill.quiz.safety": "Staying safe",
+  "feedback.correct.0": "Nice climbing!",
+  "feedback.correct.1": "You did it!",
+  "feedback.correct.2": "Great work!",
+  "feedback.correct.3": "Keep going!",
+  "feedback.wrong": "Not quite - let us try this one again.",
+  "feedback.retry": "Here is an easier one.",
+  "summary.reached": "You reached"
+}

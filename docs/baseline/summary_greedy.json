@@ -1,0 +1,40 @@
+{
+  "arm": "greedy",
+  "attempts_per_child": 300,
+  "by_group": {
+    "mid": {
+      "children": 100,
+      "in_flow_zone_fraction": 0.07263333333333331,
+      "mean_tier_first_third": 2.98,
+      "mean_tier_last_third": 2.874900000000002,
+      "success_rate": 0.8595000000000002,
+      "success_rate_last_third": 0.8714000000000004
+    },
+    "strong": {
+      "children": 100,
+      "in_flow_zone_fraction": 0.0002,
+      "mean_tier_first_third": 3.202999999999999,
+      "mean_tier_last_third": 3.049199999999999,
+      "success_rate": 0.9233666666666673,
+      "success_rate_last_third": 0.9272000000000005
+    },
+    "weak": {
+      "children": 100,
+      "in_flow_zone_fraction": 0.20426666666666662,
+      "mean_tier_first_third": 2.3689000000000013,
+      "mean_tier_last_third": 1.7171000000000007,
+      "success_rate": 0.7038333333333335,
+      "success_rate_last_third": 0.7687
+    }
+  },
+  "children": 300,
+  "description": "ablation: greedy, no exploration",
+  "in_flow_zone_fraction": 0.09236666666666671,
+  "mean_abs_deviation_from_target": 0.1149,
+  "policy": "greedy_window",
+  "static_tier": -1,
+  "success_rate": 0.8288999999999995,
+  "success_rate_last_third": 0.8557666666666661,
+  "target_success": 0.75,
+  "total_attempts": 90000
+}

@@ -1,0 +1,40 @@
+{
+  "arm": "ucb1",
+  "attempts_per_child": 300,
+  "by_group": {
+    "mid": {
+      "children": 100,
+      "in_flow_zone_fraction": 0.059466666666666654,
+      "mean_tier_first_third": 3.9535,
+      "mean_tier_last_third": 5.161999999999999,
+      "success_rate": 0.6662666666666669,
+      "success_rate_last_third": 0.6509999999999998
+    },
+    "strong": {
+      "children": 100,
+      "in_flow_zone_fraction": 0.05093333333333334,
+      "mean_tier_first_third": 3.9440999999999984,
+      "mean_tier_last_third": 5.456399999999998,
+      "success_rate": 0.8303666666666668,
+      "success_rate_last_third": 0.8218
+    },
+    "weak": {
+      "children": 100,
+      "in_flow_zone_fraction": 0.07756666666666667,
+      "mean_tier_first_third": 4.049900000000001,
+      "mean_tier_last_third": 5.2381,
+      "success_rate": 0.49853333333333333,
+      "success_rate_last_third": 0.47680000000000006
+    }
+  },
+  "children": 300,
+  "description": "ablation: UCB1 on flow-zone reward",
+  "in_flow_zone_fraction": 0.0626555555555556,
+  "mean_abs_deviation_from_target": 0.15166666666666673,
+  "policy": "ucb1_shaped",
+  "static_tier": -1,
+  "success_rate": 0.6650555555555558,
+  "success_rate_last_third": 0.6498666666666667,
+  "target_success": 0.75,
+  "total_attempts": 90000
+}

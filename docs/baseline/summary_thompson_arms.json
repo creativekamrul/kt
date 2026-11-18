@@ -1,0 +1,40 @@
+{
+  "arm": "thompson_arms",
+  "attempts_per_child": 300,
+  "by_group": {
+    "mid": {
+      "children": 100,
+      "in_flow_zone_fraction": 0.09809999999999995,
+      "mean_tier_first_third": 3.8066999999999998,
+      "mean_tier_last_third": 3.9163999999999994,
+      "success_rate": 0.7684666666666671,
+      "success_rate_last_third": 0.7764999999999997
+    },
+    "strong": {
+      "children": 100,
+      "in_flow_zone_fraction": 0.023066666666666662,
+      "mean_tier_first_third": 4.148599999999999,
+      "mean_tier_last_third": 4.501799999999999,
+      "success_rate": 0.9014,
+      "success_rate_last_third": 0.9018000000000004
+    },
+    "weak": {
+      "children": 100,
+      "in_flow_zone_fraction": 0.13110000000000005,
+      "mean_tier_first_third": 3.410699999999999,
+      "mean_tier_last_third": 3.1145999999999994,
+      "success_rate": 0.5766,
+      "success_rate_last_third": 0.6090999999999998
+    }
+  },
+  "children": 300,
+  "description": "ablation: independent Beta arm per tier",
+  "in_flow_zone_fraction": 0.08408888888888885,
+  "mean_abs_deviation_from_target": 0.11666666666666677,
+  "policy": "thompson_satisficing",
+  "static_tier": -1,
+  "success_rate": 0.7488222222222214,
+  "success_rate_last_third": 0.7624666666666666,
+  "target_success": 0.75,
+  "total_attempts": 90000
+}

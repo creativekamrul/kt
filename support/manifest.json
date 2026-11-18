@@ -1,0 +1,78 @@
+{
+  "platform": "Windows x64",
+  "python": "3.13.12",
+  "files": [
+    {
+      "path": "support/downloads/freetype-source.zip",
+      "sha256": "abba7d7f43b1bcfa73e88d58d2b615d5d2fb96053087cdff8cd29a39cabf0251"
+    },
+    {
+      "path": "support/downloads/python.3.13.12.nupkg",
+      "sha256": "389c0228afbb3530f6cd079f5cec44139b1441dd51c85ec704f7a63f1c9f3802"
+    },
+    {
+      "path": "support/downloads/SFML-source.zip",
+      "sha256": "f543181ee2c2cab62f86a35bd82309c89d87460153631c9425c7f9a2c87559b0"
+    },
+    {
+      "path": "support/wheels/cmake-4.4.4-py3-none-win_amd64.whl",
+      "sha256": "ad8e0a38b5707e27882701146bdfffecacd80e7703fa0fc36c77528518d545af"
+    },
+    {
+      "path": "support/wheels/contourpy-1.4.0-cp313-cp313-win_amd64.whl",
+      "sha256": "6507a016976a75a15aee47809a34605de6244ccc056e6164bf9fb14b27eecad4"
+    },
+    {
+      "path": "support/wheels/cycler-0.12.1-py3-none-any.whl",
+      "sha256": "85cef7cff222d8644161529808465972e51340599459b8ac3ccbac5a854e0d30"
+    },
+    {
+      "path": "support/wheels/fonttools-4.67.0-cp313-cp313-win_amd64.whl",
+      "sha256": "7343cd0ef70edf8be7f4913cb9b55b992fb4e04055b47dcfecddcc2eb045a9d2"
+    },
+    {
+      "path": "support/wheels/kiwisolver-1.5.1-cp313-cp313-win_amd64.whl",
+      "sha256": "dc23390afe9f4ef9ac3bcc72a03a56eebbde03f4c571a32cb38f859cff9a6524"
+    },
+    {
+      "path": "support/wheels/matplotlib-3.11.2-cp313-cp313-win_amd64.whl",
+      "sha256": "bc067c462a86f0e57bf52fc6e058d90171a5420007dac00c46e90153050c69a7"
+    },
+    {
+      "path": "support/wheels/ninja-1.13.2-py3-none-win_amd64.whl",
+      "sha256": "1293f4078278b70d0ee4b6cc8f3a9e030656c9b2f59909970343c4fe76070118"
+    },
+    {
+      "path": "support/wheels/numpy-2.5.4-cp313-cp313-win_amd64.whl",
+      "sha256": "8b4d2fd2d34e5f8c9235ee787de5631a37a28402b15cb80814df973d2be54129"
+    },
+    {
+      "path": "support/wheels/packaging-26.3-py3-none-any.whl",
+      "sha256": "d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c"
+    },
+    {
+      "path": "support/wheels/pillow-13.0.0-cp313-cp313-win_amd64.whl",
+      "sha256": "9dda0788a9932776a75d8bcc020076edc308ce2508b51f6739a45e3158b3fc42"
+    },
+    {
+      "path": "support/wheels/pyparsing-3.3.3-py3-none-any.whl",
+      "sha256": "ece8c00a69cf01b45d0b1dedabb469c90d8caf996d4fda40f147627a122849a4"
+    },
+    {
+      "path": "support/wheels/python_dateutil-3.0.0-py2.py3-none-any.whl",
+      "sha256": "3c79630202e4152c6add678446984236efe4f57e84d8e892aab0637bab82e9fd"
+    },
+    {
+      "path": "support/wheels/six-1.17.0-py2.py3-none-any.whl",
+      "sha256": "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274"
+    },
+    {
+      "path": "support/wheels/tzdata-2026.5-py2.py3-none-any.whl",
+      "sha256": "b683bd1b6659ddcd810ff02ad09ba821d4bf1065072805063eb35c49617905ac"
+    },
+    {
+      "path": "support/wheels/ziglang-0.13.0-py3-none-win_amd64.whl",
+      "sha256": "b64b2aa936ebbfeecfbb2611df331a5474edebe1246b98c2f56d6ae4d58b71fc"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "arm": "static",
+  "attempts_per_child": 300,
+  "by_group": {
+    "mid": {
+      "children": 100,
+      "in_flow_zone_fraction": 0.13586666666666666,
+      "mean_tier_first_third": 4.789599999999998,
+      "mean_tier_last_third": 4.802700000000002,
+      "success_rate": 0.7138333333333334,
+      "success_rate_last_third": 0.7199
+    },
+    "strong": {
+      "children": 100,
+      "in_flow_zone_fraction": 0.005633333333333334,
+      "mean_tier_first_third": 4.9329,
+      "mean_tier_last_third": 4.930599999999997,
+      "success_rate": 0.9137666666666666,
+      "success_rate_last_third": 0.9135
+    },
+    "weak": {
+      "children": 100,
+      "in_flow_zone_fraction": 0.03436666666666667,
+      "mean_tier_first_third": 4.6339,
+      "mean_tier_last_third": 4.6427,
+      "success_rate": 0.3976333333333335,
+      "success_rate_last_third": 0.4038999999999999
+    }
+  },
+  "children": 300,
+  "description": "baseline: fixed middle difficulty, no adaptation",
+  "in_flow_zone_fraction": 0.058622222222222194,
+  "mean_abs_deviation_from_target": 0.20650000000000002,
+  "policy": "static",
+  "static_tier": 5,
+  "success_rate": 0.6750777777777777,
+  "success_rate_last_third": 0.6791000000000001,
+  "target_success": 0.75,
+  "total_attempts": 90000
+}

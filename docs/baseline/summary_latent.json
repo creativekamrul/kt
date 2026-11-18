@@ -1,0 +1,40 @@
+{
+  "arm": "latent",
+  "attempts_per_child": 300,
+  "by_group": {
+    "mid": {
+      "children": 100,
+      "in_flow_zone_fraction": 0.06903333333333334,
+      "mean_tier_first_third": 2.309100000000001,
+      "mean_tier_last_third": 4.1964,
+      "success_rate": 0.8066000000000001,
+      "success_rate_last_third": 0.7765000000000002
+    },
+    "strong": {
+      "children": 100,
+      "in_flow_zone_fraction": 0.06613333333333335,
+      "mean_tier_first_third": 2.7436999999999996,
+      "mean_tier_last_third": 6.892499999999999,
+      "success_rate": 0.8432333333333338,
+      "success_rate_last_third": 0.8062
+    },
+    "weak": {
+      "children": 100,
+      "in_flow_zone_fraction": 0.18863333333333332,
+      "mean_tier_first_third": 1.5425,
+      "mean_tier_last_third": 1.8965999999999996,
+      "success_rate": 0.7431333333333334,
+      "success_rate_last_third": 0.7481000000000002
+    }
+  },
+  "children": 300,
+  "description": "shipped default: Thompson sampling over a latent-ability model",
+  "in_flow_zone_fraction": 0.10793333333333331,
+  "mean_abs_deviation_from_target": 0.04293333333333331,
+  "policy": "latent_thompson",
+  "static_tier": -1,
+  "success_rate": 0.7976555555555556,
+  "success_rate_last_third": 0.7769333333333338,
+  "target_success": 0.75,
+  "total_attempts": 90000
+}
