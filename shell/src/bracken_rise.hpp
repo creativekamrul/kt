@@ -7,11 +7,13 @@ class BrackenRise {
  public:
   using Point=sdp::TrailPoint;
   enum class Phase { Quiet, Aim, Rush, Stamp, Wave, Rest, Stunned, Clear };
+  enum class Lesson { Waiting, Dodge, Parry, Ready, Done };
   enum class Path { Fork, Fern, Cairn };
   static constexpr Point entry{192,407}, exit{192,34}, clearing{192,111};
   Point feet=entry, ram{192,98}, facing{0,-1};
   Phase phase=Phase::Quiet;
   Path path=Path::Fork;
+  Lesson lesson=Lesson::Done;
   int hearts=3,guard=3;
   float clock=0,anim=0;
   bool victory=false;
@@ -24,19 +26,34 @@ class BrackenRise {
   static float distance(Point a,Point b){return std::hypot(a.x-b.x,a.y-b.y);}
   bool fighting()const{return phase!=Phase::Quiet && phase!=Phase::Clear;}
   bool cleared()const{return phase==Phase::Clear;}
-  void enter(bool complete,bool downhill){
+  void enter(bool complete,bool downhill,bool learned){
+    lesson=complete || learned?Lesson::Done:Lesson::Waiting;
     phase=complete?Phase::Clear:Phase::Quiet;path=Path::Fork;
     feet=downhill?Point{192,48}:entry;ram=complete?Point{249,102}:Point{192,98};facing={0,downhill?1.f:-1.f};
-    victory=false;resetActions();message_.clear();messageTime_=0;
+    victory=false;hello_=0;resetActions();message_.clear();messageTime_=0;
   }
   void dodge(){
     if(dodgeDelay_>0 || parry_>0)return;
+    if(lesson==Lesson::Dodge && cue()){
+      lesson=Lesson::Parry;clock=0;say("Nice dodge! Now try a parry.",1.f);
+    }else if(lesson==Lesson::Dodge)say("Watch for the gold star. Try again!",.7f);
     dash_=facing;dodge_=.22f;dodgeDelay_=.65f;
   }
   void parry(){
-    if(!fighting() || parryDelay_>0 || dodge_>0)return;
+    if((!fighting() && lesson!=Lesson::Parry) || parryDelay_>0 || dodge_>0)return;
     parry_=.30f;parryDelay_=.58f;
+    if(lesson==Lesson::Parry && cue()){
+      lesson=Lesson::Ready;clock=0;say("You caught the gust!",1.f);
+    }else if(lesson==Lesson::Parry)say("Wait for the star to shine, then parry.",.7f);
   }
+  bool practicing()const{return lesson==Lesson::Dodge || lesson==Lesson::Parry || lesson==Lesson::Ready;}
+  bool cue()const{return clock>=1.1f && clock<2.2f;}
+  bool finishLesson(){
+    if(lesson!=Lesson::Ready)return false;
+    lesson=Lesson::Done;resetActions();return true;
+  }
+  bool canGreet()const{return cleared() && distance(feet,ram)<30;}
+  void greet(){if(canGreet()){hello_=1.3f;say("The Copperhorn bows. You bow back.",2.5f);}}
   void strike(){
     if(!fighting() || strikeDelay_>0 || dodge_>0)return;
     strike_=.22f;strikeDelay_=.47f;facing=unit(feet,ram);
@@ -48,6 +65,8 @@ class BrackenRise {
   }
   std::string objective()const {
     if(messageTime_>0)return message_;
+    if(lesson==Lesson::Ready)return "Two moves learned! Head into the clearing when you're ready.";
+    if(practicing())return cue()?(lesson==Lesson::Dodge?"Gust! Dodge now.":"Gust! Parry now."):"Watch the little gust. Wait for the gold star.";
     switch(phase){
       case Phase::Aim:return "Watch the coral charge line.";
       case Phase::Rush:return "Dodge aside or parry the charge!";
@@ -64,7 +83,7 @@ class BrackenRise {
     return "Choose a climb: teal fern switchbacks or orange cairn steps.";
   }
   void update(float dt,Point move){
-    anim+=dt;clock+=dt;
+    anim+=dt;clock+=dt;hello_=std::max(0.f,hello_-dt);
     for(float* p:{&parryDelay_,&strikeDelay_,&dodgeDelay_,&messageTime_,&invulnerable_,&strike_})
       *p=std::max(0.f,*p-dt);
     if(dodge_>0)slide(dash_,205*dt);
@@ -77,7 +96,11 @@ class BrackenRise {
         if(feet.x<166)path=Path::Fern;
         if(feet.x>218)path=Path::Cairn;
       }
-      if(feet.y<=145){
+      if(lesson==Lesson::Waiting && feet.y<=164){
+        lesson=Lesson::Dodge;clock=0;
+      }
+      if(practicing() && clock>=2.65f)clock=0;
+      if(lesson==Lesson::Done && feet.y<=145){
         hearts=path==Path::Fern?4:3;guard=3;charges_=0;ram={192,95};
         resetActions();startAim();say("Copperhorn guards the pass.",1);
       }
@@ -106,6 +129,13 @@ class BrackenRise {
         if(arena(p))dot(t,p.x,p.y,3,2,i%3?0xf8d987:0xcf7962);
       }
     }
+    if(practicing() && lesson!=Lesson::Ready){
+      // A harmless seed gust shows the same wind-up and bright contact cue each cycle.
+      float travel=std::min(1.f,clock/1.1f);
+      float x=feet.x+6+(1-travel)*37,y=feet.y-12-std::sin(travel*3.14f)*7;
+      dot(t,x,y,4,3,0xf8dda3);dot(t,x+4,y-2,4,2,0xb9ddbd);
+      if(cue()){dot(t,x-3,y,9,2,0xffdc70);dot(t,x+1,y-4,2,10,0xffdc70);}
+    }
     auto hero=[&]{
       if(dodge_>0)for(int i=1;i<=3;++i)dot(t,feet.x-dash_.x*i*4,feet.y-dash_.y*i*4,4-i,2,0xffdb99);
       if(invulnerable_<=0 || int(anim*12)%2==0)art.hiker(t,feet,dir,frame);
@@ -121,6 +151,7 @@ class BrackenRise {
       int f=cleared()?3:phase==Phase::Aim || phase==Phase::Stamp?1:phase==Phase::Rush?2:0;
       sf::Sprite s(ramArt_,{f*48,0,48,40});s.setOrigin(24,34);
       s.setScale((fighting()?aim_.x:1)<0?-1.f:1.f,1);
+      if(hello_>0)s.setRotation(10*std::sin(hello_*3.14159f/1.3f));
       s.setPosition(std::round(ram.x),std::round(ram.y)-(phase==Phase::Stamp?3:0));t.draw(s);
       if(phase==Phase::Stunned || phase==Phase::Rest){
         for(int i=-1;i<=1;++i)dot(t,ram.x+i*7,ram.y-37+2*std::sin(anim*9+i),3,2,0xffda71);
@@ -129,11 +160,18 @@ class BrackenRise {
 
     if(feet.y<ram.y){hero();creature();}else{creature();hero();}
   }
+  bool clear(Point p)const{
+    if(p.x<3 || p.x>=381 || p.y<8 || p.y>=441)return false;
+    if(fighting() && !arena(p))return false;
+    if(!cleared() && p.y<56)return false;
+    for(int off:{-2,2})if(mask_.getPixel(unsigned(p.x+off),unsigned(p.y)).r<128)return false;
+    return true;
+  }
  private:
   sf::Texture land_,ramArt_;sf::Image mask_;
   Point aim_{1,0},dash_{};
   float dodge_=0,dodgeDelay_=0,parry_=0,parryDelay_=0,strike_=0,strikeDelay_=0,invulnerable_=0;
-  float messageTime_=0;
+  float messageTime_=0,hello_=0;
   int charges_=0;
   bool contacted_=false;
   std::string message_;
@@ -142,13 +180,6 @@ class BrackenRise {
   }
   static bool arena(Point p){
     float x=(p.x-192)/79.f,y=(p.y-105)/50.f;return x*x+y*y<=1;
-  }
-  bool clear(Point p)const{
-    if(p.x<3 || p.x>=381 || p.y<8 || p.y>=441)return false;
-    if(fighting() && !arena(p))return false;
-    if(!cleared() && p.y<56)return false;
-    for(int off:{-2,2})if(mask_.getPixel(unsigned(p.x+off),unsigned(p.y)).r<128)return false;
-    return true;
   }
   void slide(Point d,float step){
     Point x{feet.x+d.x*step,feet.y};if(clear(x))feet=x;

@@ -9,7 +9,7 @@ namespace trail {
 class BayLife {
  public:
   using Point = WillowBay::Point;
-  enum class Target { None, Sol, Nia, Kit, Flowers, Sign, Bridge, WestBank, Ridge, Pass, Lodge };
+  enum class Target { None, Sol, Nia, Kit, Flowers, Sign, Bridge, WestBank, Ridge, Pass, Lodge, Fox, Tortoise };
   static constexpr Point flowers{239,188}, sign{258,160};
   struct Resident {
     const char* name;
@@ -28,9 +28,22 @@ class BayLife {
        !moth_.loadFromFile("shell/assets/wind-moth.png"))
       throw std::runtime_error("Cannot load Willow Bay villagers");
   }
-  void load(sdp::IDataStore& store,int child) {
+  void load(sdp::IDataStore& store,int child,bool firstBridge=true) {
     store_=&store; child_=child;
+    visitors={store.hasMilestone(child,"guardian.emberfox"),store.hasMilestone(child,"guardian.bellback")};
+    solFollowup_=false;
+    tour_=Tour::Off; waypoint_=0; invite_=false;
+    for(auto& r:folk){r.feet=r.stops[0];r.next=1;r.rest=2;r.frame=0;}
+
     for(int i=0;i<Count;++i) done_[i]=store.hasMilestone(child,keys_[i]);
+    if(firstBridge && !done_[Basket] && !store.hasMilestone(child,"tutorial.bridge.arrived")
+       && !store.hasMilestone(child,"tutorial.bridge.visited")){
+      tour_=store.hasMilestone(child,"tutorial.bridge.following")?Tour::Walking:Tour::Meet;
+    }
+  }
+  std::array<bool,2> visitors{};
+  void solRemembers(const char* memory){
+    speaker="Sol";portrait_=0;line=memory;solFollowup_=true;
   }
   Point point(Target t) const {
     switch(t){
@@ -44,13 +57,17 @@ class BayLife {
       case Target::Ridge:return {91,162};
       case Target::Pass:return WillowBay::pass;
       case Target::Lodge:return WillowBay::lodge;
+      case Target::Fox:return {308,212};
+      case Target::Tortoise:return {264,223};
       default:return {};
     }
   }
   Target nearby(Point p,bool repaired=false) const {
+    if(tour_==Tour::Returning && !repaired && WillowBay::near(p,WillowBay::bridge,20))return Target::Bridge;
     Target best=Target::None; float limit=20;
     for(auto t:{Target::Bridge,Target::WestBank,Target::Pass,Target::Lodge,Target::Sol,
-                Target::Nia,Target::Kit,Target::Flowers,Target::Sign,Target::Ridge}){
+                Target::Nia,Target::Kit,Target::Flowers,Target::Sign,Target::Ridge,Target::Fox,Target::Tortoise}){
+      if((t==Target::Fox && !visitors[0]) || (t==Target::Tortoise && !visitors[1]))continue;
       if(t==Target::Ridge && !repaired)continue;
       if(t==Target::Flowers && (!done_[Basket] || done_[Blooms]))continue;
       if(t==Target::Sign && (!done_[Ribbon] || done_[Raised]))continue;
@@ -60,6 +77,7 @@ class BayLife {
     return best;
   }
   Target objective(bool repaired) const {
+    if(!repaired && (tour_==Tour::Meet || tour_==Tour::Walking))return Target::Nia;
     if(done_[Basket] && !done_[Blooms])return Target::Flowers;
     if(done_[Blooms] && !done_[Delivered])return Target::Sol;
     if(done_[Ribbon] && !done_[Raised])return Target::Sign;
@@ -67,6 +85,8 @@ class BayLife {
   }
   const char* label(Target t) const {
     switch(t){
+      case Target::Fox:return "Say hi to Ember Fox";
+      case Target::Tortoise:return "Say hi to Bellback";
       case Target::Sol:return "Talk to Sol, the carpenter";
       case Target::Nia:return "Talk to Nia, the florist";
       case Target::Kit:return "Talk to Kit, the courier";
@@ -79,19 +99,40 @@ class BayLife {
       default:return "";
     }
   }
+  bool meetingGuide()const{return tour_==Tour::Meet;}
+  bool followingGuide()const{return tour_==Tour::Walking;}
+  bool inviting()const{return invite_;}
+  void visitedBridge(){
+    if(!store_->hasMilestone(child_,"tutorial.bridge.visited"))store_->awardMilestone(child_,"tutorial.bridge.visited");
+    if(tour_==Tour::Walking || tour_==Tour::Meet)tour_=waypoint_?Tour::Returning:Tour::Off;
+  }
   bool inDialogue() const {return !line.empty();}
   bool sparring() const {return spar_;}
   bool ready() const {return beat_>=1.15f && beat_<2.15f;}
   void dismiss(){line.clear();offer_=false;}
-  void cancel(){dismiss();spar_=false;}
+  void cancel(){
+    if(invite_)tour_=Tour::Off;
+    solFollowup_=false;invite_=false;dismiss();spar_=false;
+  }
   void confirm() {
+    if(solFollowup_){solFollowup_=false;interact(Target::Sol);return;}
+    if(invite_){
+      store_->awardMilestone(child_,"tutorial.bridge.following");tour_=Tour::Walking;
+      invite_=false;dismiss();return;
+    }
     bool start=offer_;dismiss();
     if(start){spar_=true;hits_=0;beat_=0;burst_=0;}
   }
   void interact(Target t){
     switch(t){
+      case Target::Fox: speaker="Ember Fox";portrait_=-1;line="The fox gives a little hop and brushes your boot with its tail.";break;
+      case Target::Tortoise: speaker="Bellback";portrait_=-1;line="Bellback stretches up for a chin scratch. Its shell gives a soft ding.";break;
       case Target::Nia:
         speaker="Nia";portrait_=1;
+        if(meetingGuide()){
+          invite_=true;line="Want to see Willow Bridge? Walk with me. I'll wait if you stop.";break;
+        }
+        if(followingGuide()){line="This way! Stay near me and we'll reach the planks together.";break;}
         if(!done_[Basket]){mark(Basket);line="Sol has worked since dawn. Pick some pink creek bells for his bench?";}
         else if(!done_[Blooms])line="The creek bells grow beside the west path. Leave the roots for next spring.";
         else if(!done_[Delivered])line="What a bunch! Sol is down by the bridge.";
@@ -128,6 +169,10 @@ class BayLife {
     if(inDialogue())return;
     if(spar_){burst_=std::max(0.f,burst_-dt);if(burst_<=0)beat_=std::fmod(beat_+dt,2.7f);return;}
     for(auto& r:folk){
+      if(&r==&folk[1] && tour_!=Tour::Off){
+        if(tour_==Tour::Meet){r.frame=0;r.facing=1;continue;}
+        walkGuide(r,dt,player);continue;
+      }
       if(WillowBay::near(r.feet,player,13)){
         r.frame=0;r.facing=heading(player.x-r.feet.x,player.y-r.feet.y);continue;
       }
@@ -140,7 +185,10 @@ class BayLife {
     }
   }
   void drawPerson(sf::RenderTarget& t,int i,Point feet,bool watching) const {
-    const auto& r=folk[i];sf::Sprite s(cast_,{r.frame*24,i*112+(watching?2:r.facing)*28,24,28});
+    const auto& r=folk[i];drawPose(t,i,feet,watching?2:r.facing,r.frame);
+  }
+  void drawPose(sf::RenderTarget& t,int i,Point feet,int facing,int frame) const {
+    sf::Sprite s(cast_,{frame*24,i*112+facing*28,24,28});
     s.setOrigin(12,25);s.setPosition(std::round(feet.x),std::round(feet.y));t.draw(s);
   }
   void portrait(sf::RenderTarget& t,int x,int y) const {
@@ -204,6 +252,33 @@ class BayLife {
   bool offer()const{return offer_;}
   std::string line,speaker;
  private:
+  enum class Tour { Off, Meet, Walking, Returning };
+  Tour tour_=Tour::Off;
+  int waypoint_=0;
+  bool invite_=false,solFollowup_=false;
+  // The last stop is beside the bridge socket, leaving its approach open.
+  static constexpr std::array<Point,7> bridgePath{{{273,194},{267,202},{252,198},{235,187},{218,177},{201,170},{183,159}}};
+  void walkGuide(Resident& nia,float dt,Point player){
+    bool leaving=tour_==Tour::Returning;
+    if(!leaving && !WillowBay::near(nia.feet,player,42)){
+      nia.frame=0;nia.facing=heading(player.x-nia.feet.x,player.y-nia.feet.y);return;
+    }
+    auto stop=bridgePath[waypoint_];
+    float dx=stop.x-nia.feet.x,dy=stop.y-nia.feet.y,d=std::hypot(dx,dy);
+    if(d<=dt*35){
+      nia.feet=stop;nia.frame=0;
+      if(leaving){if(waypoint_==0)tour_=Tour::Off;else --waypoint_;}
+      else if(waypoint_+1<int(bridgePath.size()))++waypoint_;
+      else if(WillowBay::near(player,WillowBay::bridge,20)){
+        store_->awardMilestone(child_,"tutorial.bridge.arrived");
+        speaker="Nia";portrait_=1;line="Here we are! Stand by the gold marker to try a plank.";
+        tour_=Tour::Returning;
+      }
+      return;
+    }
+    nia.facing=heading(dx,dy);nia.feet.x+=dt*35*dx/d;nia.feet.y+=dt*35*dy/d;
+    nia.stride+=dt;nia.frame=int(nia.stride*7)%4;
+  }
   enum Fact { Basket,Blooms,Delivered,Ribbon,Raised,Sparred,Count };
   static constexpr std::array<const char*,Count> keys_={"bay.bells.accepted","bay.bells.picked",
     "bay.bells.delivered","bay.pennant.accepted","bay.pennant.raised","bay.flick.parried"};

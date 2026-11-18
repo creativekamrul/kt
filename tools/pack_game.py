@@ -28,7 +28,7 @@ for src, name in [
 ]:
     files.append((src, "licenses/" + name))
 
-controls = """KT 1.2.0
+controls = """KT 1.2.2
 Double-click KT.exe to play. Saves are in %LOCALAPPDATA%/KT/sdp100.db.
 An existing sdp100.db beside KT.exe takes priority for older portable saves.
 
@@ -36,12 +36,20 @@ Select a climber or create a nickname at the lodge. Open Parent report for that
 climber to review focused play time, trail answers and recent progress. Return
 through Pause > Climbers & parent report.
 
+When exploring, select Show me the way in the field guide for ten seconds of
+gold trail markers. Talk to Sol about your guardian stamps. After their fights,
+greet Copperhorn and Moonkite in their clearings, or Ember Fox and Bellback
+in Willow Bay plaza, with E or A.
+Open the journal to see stamps for the guardians you have met. Attack sounds
+match the visible signs: hoofbeats, a whistle, quick paw steps and a bell.
 Press F1 for the field guide, or open it from Pause. Choose Save game in Pause
 to save at your current camp. Continue under your nickname to return.
 At altitudes 12 and 36 meet the Ember Fox and Bellback Tortoise. Dodge the
 marked lane and ring a bell for the fox. Parry on the big star for Bellback.
 
-Walk west from Willow Bay plaza to repair Willow Bridge. Cross to the west
+Talk to Nia in the plaza and follow her to Willow Bridge. Count along with
+her first-plank hint. Before the Copperhorn, practice a dodge and a parry
+when the harmless gust flashes gold. Cross to the west
 bank and follow the gold marker to Bracken Rise. Choose the fern switchbacks
 for an extra heart or the cairn steps for a longer parry opening. Against the
 copperhorn, dodge with Space/B, parry with Q/X and strike with E/A. Take the

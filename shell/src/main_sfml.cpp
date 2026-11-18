@@ -63,6 +63,7 @@ class Shell {
         !font_.loadFromFile("assets/font.ttf"))
       throw std::runtime_error("KT needs a readable interface font.");
     openProfiles();
+    if(!stampArt_.loadFromFile("shell/assets/guardian-stamps.png"))throw std::runtime_error("Missing journal stamps");
     if(!peakArt_.loadFromFile("shell/assets/summit-walk.png"))throw std::runtime_error("Missing summit landscape");
     if(!guardianArt_[0].loadFromFile("shell/assets/ember-fox.png") || !guardianArt_[1].loadFromFile("shell/assets/bellback.png"))throw std::runtime_error("Missing pass guardians");
     pad_ = connectedPad();
@@ -115,7 +116,9 @@ class Shell {
       }
       if (!window_.isOpen()) break;
       float elapsed=frameClock_.restart().asSeconds();
-      trackPlay(elapsed);tick(std::min(.05f,elapsed));checkpoint();
+      trackPlay(elapsed);tick(std::min(.05f,elapsed));
+      if(window_.hasFocus() && page_!=Page::Pause && page_!=Page::Guide)encounterFeedback();
+      checkpoint();
       viewport();
       draw();
       if ((padMode_ || focusKeys_) && !walking()) showFocus();
@@ -143,10 +146,16 @@ class Shell {
     if(id==activeId_){page_=previous_;return;}
     flushPlay();
     activeId_=id;activeName_=selected().name;
+    for(std::size_t i=0;i<stamps_.size();++i){
+      stamps_[i]=store_->hasMilestone(id,stampKey(i)) || store_->hasMilestone(id,guardians_[i].victory);
+    }
+    glowTime_=0;lastCue_={};bridgeCelebration_=-1;
     machine_.selectProfile(id);runner_.startSession(id);
     campaign_=std::make_unique<TrailCampaign>(*store_,id);
     journal_=campaign_->journal(runner_.history());
-    life_.cancel();life_.load(*store_,id);
+    auto firstSpan=campaign_->bridgeSpan(0);
+    bool freshBridge=firstSpan && !firstSpan->filled[0] && !firstSpan->filled[1];
+    life_.cancel();life_.load(*store_,id,freshBridge);
     owlCleared_=store_->hasMilestone(id,"mountain.glasswind.moonkite");
     homecoming_=store_->hasMilestone(id,"mountain.summit.homecoming");
     bayPosition_=trail::WillowBay::plaza;direction_=1;moving_=false;bayZoom_=0;
@@ -322,7 +331,6 @@ class Shell {
   }
   void restoreCamp(){
     lastCamp_=store_->savedCamp(activeId_);
-    showFirstSteps_=lastCamp_.empty() && journal_.stages[0]==0;
     if(lastCamp_=="Bracken Rise")enterRise(true);
     else if(lastCamp_=="Glasswind Hollow")enterHollow();
     else if(lastCamp_=="Upper mountain" || lastCamp_=="Ember Lookout" || lastCamp_=="Bellflower Terrace")takePass();
@@ -335,12 +343,38 @@ class Shell {
     }
     checkpoint();
   }
+  struct GuardianEntry {const char* name;const char* victory;};
+  static constexpr std::array<GuardianEntry,4> guardians_{{
+    {"Copperhorn","mountain.bracken.copperhorn"},{"Moonkite","mountain.glasswind.moonkite"},
+    {"Ember Fox","guardian.emberfox"},{"Bellback","guardian.bellback"}
+  }};
+  static std::string stampKey(std::size_t i){return std::string(guardians_[i].victory)+".met";}
+  void meetGuardian(std::size_t i){
+    if(stamps_[i])return;
+    store_->awardMilestone(activeId_,stampKey(i));stamps_[i]=true;
+  }
+  void encounterFeedback(){
+    std::string_view cue;
+    if(page_==Page::Ridge && rise_.fighting()){
+      meetGuardian(0);
+      if(rise_.phase==trail::BrackenRise::Phase::Aim || rise_.phase==trail::BrackenRise::Phase::Stamp)cue="copperhorn-hooves";
+    }else if(page_==Page::Hollow && hollow_.fighting()){
+      meetGuardian(1);
+      if(hollow_.phase==trail::Glasswind::Phase::Tell)cue="moonkite-whistle";
+    }else if(page_==Page::Guardian){
+      using Phase=trail::PassGuardian::Phase;
+      if(guardian_.kind==0 && guardian_.phase==Phase::Warning)cue="ember-paws";
+      if(guardian_.kind==1 && guardian_.phase==Phase::Incoming && guardian_.clock>=.50f)cue="bellback-star";
+    }
+    if(!cue.empty() && cue!=lastCue_)chime(cue.data());
+    lastCue_=cue;
+  }
   void checkGuardians(){
     int altitude=runner_.progressionState().altitude;
     for(int k=0;k<2;++k){
       trail::PassGuardian next;next.kind=k;
       if(altitude>=(k==0?12:36) && !store_->hasMilestone(activeId_,next.milestone())){
-        guardian_=next;page_=Page::Guardian;return;
+        guardian_=next;page_=Page::Guardian;meetGuardian(k+2);return;
       }
     }
   }
@@ -354,14 +388,32 @@ class Shell {
   }
   void rewardGuardian(){
     if(guardian_.phase==trail::PassGuardian::Phase::Clear && !store_->hasMilestone(activeId_,guardian_.milestone())){
-      store_->awardMilestone(activeId_,guardian_.milestone());chime("camp");
+      store_->awardMilestone(activeId_,guardian_.milestone());life_.visitors[guardian_.kind]=true;chime("camp");
     }
   }
   void guide(){
     guideFrom_=page_;page_=Page::Guide;menuIndex_=0;focusKeys_=true;keys_.fill(false);
   }
+  Page guideScene()const{return guideFrom_==Page::Pause?previous_:guideFrom_;}
+  bool canLightWay()const{
+    switch(guideScene()){
+      case Page::Bay:return !life_.inDialogue() && !life_.sparring();
+      case Page::Ridge:return !rise_.fighting() && !rise_.practicing();
+      case Page::Hollow:return !hollow_.fighting();
+      case Page::Climb:return !atCampOrTrail();
+      case Page::Task:return true;
+      case Page::Summit:return !credits_;
+      default:return false;
+    }
+  }
+  Rect wayButton()const{return {472,489,334,60};}
+  void lightWay(){
+    page_=guideScene();glowScene_=page_;glowTime_=10;routeLights_.reset();menuIndex_=0;
+    keys_.fill(false);padLatch_=true;
+  }
+  bool glowing()const{return glowTime_>0 && page_==glowScene_;}
   void drawGuide(){
-    auto source=guideFrom_==Page::Pause?previous_:guideFrom_;
+    auto source=guideScene();
     std::array<std::string,3> lines;
     auto use=std::string(padMode_?"A":"E");
     if(source==Page::Bay)lines={"Walk with "+std::string(padMode_?"the stick or D-pad.":"the arrow keys or WASD."),"Follow the little gold arrows to the glowing marker.","Stand beside a friend or sign. Press "+use+" to see what happens."};
@@ -379,8 +431,9 @@ class Shell {
       text(lines[i],216,y+4,22,paper,582);
     }
     button(guideReturn(),"Got it!",true);
+    if(canLightWay())button(wayButton(),"Show me the way",false);
   }
-  Rect guideReturn()const{return {304,489,352,60};}
+  Rect guideReturn()const{return canLightWay()?Rect{154,489,292,60}:Rect{304,489,352,60};}
   void drawGuardian(){
     using Phase=trail::PassGuardian::Phase;
     auto ui=window_.getView();
@@ -432,7 +485,7 @@ class Shell {
     }
     rect({33,559,894,112},sf::Color(30,63,65,247));
     text(prompt,53,571,27,paper,850,true);
-    text(guardian_.phase==Phase::Meet?use+"   I'm ready":guardian_.phase==Phase::Clear?use+"   Continue climbing":fox?(padMode_?"Stick   Move     B   Dodge":"Arrows   Move     Space   Dodge"):"Listen and watch. You can always try again.",54,625,20,gold,850);
+    text(guardian_.phase==Phase::Meet?use+"   I'm ready":guardian_.phase==Phase::Clear?use+"   Continue climbing. Say hi in Willow Bay plaza later!":fox?(padMode_?"Stick   Move     B   Dodge":"Arrows   Move     Space   Dodge"):"Listen and watch. You can always try again.",54,625,20,gold,850);
   }
 
   void fetch() {
@@ -495,7 +548,8 @@ class Shell {
   void enterRise(bool fromBridge,bool downhill=false) {
     ridgeFromBridge_=fromBridge;
     if(downhill && page_==Page::Climb && !atCampOrTrail())rememberTrail();
-    rise_.enter(store_->hasMilestone(runner_.childId(),"mountain.bracken.copperhorn"),downhill);
+    rise_.enter(store_->hasMilestone(activeId_,"mountain.bracken.copperhorn"),downhill,
+                store_->hasMilestone(activeId_,"tutorial.copperhorn.practice"));
     direction_=downhill?1:0; moving_=false;page_=Page::Ridge;
   }
   void enterHollow(bool downhill=false){
@@ -539,6 +593,7 @@ class Shell {
   }
   void openLevel(int level) {
     if (level == 0) {
+      life_.visitedBridge();
       bridgeFromBay_=page_==Page::Bay;
       replay_ = journal_.stages[0] == int(expeditions()[0].tasks.size());
       openSpan(replay_ ? 0 : journal_.stages[0]);
@@ -625,7 +680,10 @@ class Shell {
     }
   }
   void key(sf::Keyboard::Key k) {
-    if(page_==Page::Guide){if(k==sf::Keyboard::F1 || k==sf::Keyboard::Escape || k==sf::Keyboard::Enter || k==sf::Keyboard::Space)page_=guideFrom_;return;}
+    if(page_==Page::Guide){
+      if(k==sf::Keyboard::Escape || k==sf::Keyboard::F1){page_=guideFrom_;return;}
+      if(k==sf::Keyboard::Enter || k==sf::Keyboard::Space){gamepadButton(0);return;}
+    }
     if(k==sf::Keyboard::F1 && activeId_ && !familyPage()){guide();return;}
     if(page_==Page::Guardian){
       if(k==sf::Keyboard::E || k==sf::Keyboard::Enter)useGuardian();
@@ -669,7 +727,7 @@ class Shell {
     else if (k==sf::Keyboard::Enter || k==sf::Keyboard::Space) click(homeButton(0).x+8,homeButton(0).y+8);
   }
   void click(int x, int y) {
-    if(page_==Page::Guide){if(guideReturn().contains(x,y))page_=guideFrom_;return;}
+    if(page_==Page::Guide){if(guideReturn().contains(x,y))page_=guideFrom_;else if(canLightWay() && wayButton().contains(x,y))lightWay();return;}
     if(familyPage()){
       auto buttons=familyControls();
       for(int i=0;i<int(buttons.size());++i)if(buttons[i].contains(x,y)){familyAction(i);break;}
@@ -732,9 +790,10 @@ class Shell {
   }
 
   void openSpan(int stage) {
+    bridgeCelebration_=-1;
     span_ = campaign_->bridgeSpan(stage,replay_);
     if (!span_) { leaveBridge(); return; }
-    held_ = -1; picked_ = -1;
+    held_ = -1; picked_ = -1;menuIndex_=0;focusKeys_=true;
     hint_.clear();
     page_ = Page::Bridge;
   }
@@ -754,7 +813,12 @@ class Shell {
     const auto outcome = campaign_->placePlank(*span_,gap,span_->rack[piece],replay_);
     if (outcome == ExpeditionOutcome::Unavailable) { leaveBridge(); return; }
     if (outcome == ExpeditionOutcome::TryAgain) hint_ = "Start at " + std::to_string(span_->deck.front()) + ". " + expeditions()[0].tasks[span_->stage].prompt;
-    else hint_.clear();
+    else {
+      hint_.clear();
+      if(outcome==ExpeditionOutcome::Completed && !replay_){
+        bridgeCelebration_=0;menuIndex_=0;
+      }
+    }
   }
   void wood(Rect r, int value, bool fresh) {
     const sf::Color edge(104,74,52), grain(175,124,77);
@@ -768,8 +832,34 @@ class Shell {
     const auto digits = std::to_string(value);
     text(digits, r.x+r.width/2-int(digits.size())*10,r.y+21,34,ink,86,true);
   }
+  void drawBridgeCelebration(){
+    const auto ui=window_.getView();
+    sf::View closeup(sf::FloatRect(62,98,180,131.25f));closeup.setViewport(ui.getViewport());
+    window_.setView(closeup);
+    float t=bridgeCelebration_;
+    bay_.draw(window_,t<.72f?2:3,animationTime_);
+    if(t<.72f){int lift=int(5*(1-std::min(1.f,t/.72f)));rect({151,158-lift,6,17},sf::Color(209,159,96));}
+    life_.drawPose(window_,0,{148,162},2,0);
+    if(t<1.45f){
+      bool down=(t>=.72f && t<.88f) || t>=1.14f;
+      int y=down?163:152;
+      rect({152,std::min(157,y),2,1+std::abs(157-y)},sf::Color(128,77,52));
+      rect({150,y,7,3},sf::Color(66,80,82));rect({150,y,7,1},sf::Color(192,203,182));
+    }
+    float walk=std::clamp((t-1.45f)/2.7f,0.f,1.f);
+    life_.drawPose(window_,1,{184-75*walk,170},walk>=1?2:3,walk>0 && walk<1?int(t*8)%4:0);
+    art_.hiker(window_,{186,182},0,0);
+    window_.setView(ui);
+    rect({35,32,640,88},sf::Color(33,66,64,242));
+    text("Bridge Builder",55,39,28,gold,590,true);
+    text(t<1.45f?"Sol taps your last plank snug.":walk<1?"Nia takes the first walk across.":"Nia: Thank you! Now we can cross the creek.",55,78,22,paper,590);
+    button(action,padMode_?"Continue    [A]":"Continue    [Enter]",true);
+  }
   void drawBridge() {
+    if(bridgeCelebration_>=0){drawBridgeCelebration();return;}
     const bool done = span_->complete();
+    bool firstPlank=span_->stage==0 && !replay_ && !span_->filled[0];
+    int firstGap=span_->gaps[0];
     const bool final = span_->stage+1 == int(expeditions()[0].tasks.size());
     rect({0,0,960,72},green);
     text("Willow Bridge",48,12,34,paper,500,true);
@@ -786,7 +876,7 @@ class Shell {
       const bool gap = it != span_->gaps.end();
       if (gap && !span_->filled[it-span_->gaps.begin()]) {
         const bool over = picked_ >= 0 || (held_ >= 0 && r.contains(int(pointer_.x),int(pointer_.y)));
-        rect(r,over ? gold : sf::Color(203,221,181));
+        rect(r,(firstPlank ? i==firstGap : over) ? gold : sf::Color(203,221,181));
         rect({r.x+4,r.y+4,r.width-8,r.height-8},sf::Color(58,100,91));
         text("?",r.x+41,r.y+23,30,paper);
       } else wood(r,span_->deck[i],gap);
@@ -797,7 +887,17 @@ class Shell {
                    "Both planks fit. The next span is ready to repair.",48,520,23,muted);
       button(action,std::string(final ? (bridgeFromBay_ ? "Walk back to the bay" : "View expeditions") : "Next span")+(padMode_ ? "    [A]" : "    [Enter]"),true);
     } else {
-      text(hint_.empty() ? (padMode_ ? "Select a plank with A, then select its gap. B cancels." : "Click a plank, then a gap. You can also drag it into place.") : hint_,48,438,23,green,860,true);
+      if(firstPlank){
+        int before=span_->deck[firstGap-1], answer=span_->deck[firstGap];
+        const std::string count=std::to_string(before)+", "+std::to_string(before+1)+", "+std::to_string(answer);
+        rect({40,397,880,78},sf::Color(226,238,215));
+        text("Nia: Count two steps from "+std::to_string(before)+".  "+count+"!",54,401,23,ink,845,true);
+        std::string pick="Pick plank "+std::to_string(answer);
+        std::string instruction=picked_<0?pick+" for the gold gap.":span_->rack[picked_]==answer?"Now choose the gold gap.":"Try the gold gap, or choose another plank.";
+        text((hint_.empty()?"":"Try again. ")+instruction+(padMode_?"   [A]":"   [Click or Enter]"),54,438,20,green,845);
+      }else {
+        text(hint_.empty() ? (padMode_ ? "Select a plank with A, then select its gap. B cancels." : "Click a plank, then a gap. You can also drag it into place.") : hint_,48,438,23,green,860,true);
+      }
       for (int i=0; i<int(span_->rack.size()); ++i)
         if (held_ != i && picked_ != i && onRack(i)) wood(rackSlot(i),span_->rack[i],true);
     }
@@ -812,6 +912,24 @@ class Shell {
     }
   }
 
+  void drawGuardianStamps(){
+    rect({52,529,856,64},sf::Color(236,226,197));
+    text("Guardian stamps",63,533,17,ink,157,true);
+    text("Meet them to collect",63,558,14,muted,153);
+    for(int i=0;i<4;++i){
+      int x=224+i*169;
+      if(stamps_[i]){
+        sf::Sprite stamp(stampArt_,{32*i,0,32,32});stamp.setScale(1.5f,1.5f);
+        stamp.setPosition(float(x),537);window_.draw(stamp);
+      }else{
+        sf::CircleShape rim(20,12);rim.setPosition(float(x+4),541);
+        rim.setFillColor(sf::Color::Transparent);rim.setOutlineThickness(2);
+        rim.setOutlineColor(sf::Color(186,176,149));window_.draw(rim);
+        text("?",x+18,547,18,muted,20,true);
+      }
+      text(stamps_[i]?guardians_[i].name:"Undiscovered",x+54,549,16,stamps_[i]?ink:muted,108,stamps_[i]);
+    }
+  }
   void drawJournal() {
     rect({0, 0, 960, 78}, green);
     text("KT   /   Trail journal", 52, 18, 30, paper, 480, true);
@@ -839,6 +957,7 @@ class Shell {
         }
         text(i == 0 && done ? "Replay crossing" : status, 587, row.y + 21, 18, available ? paper : muted, 299);
       }
+      drawGuardianStamps();
       button(action, padMode_ ? "Achievement book" : "Achievement book    [B]", true);
     } else if (page_ == Page::Badges) {
       text("Achievement book", 52, 90, 35, ink, 850, true);
@@ -935,6 +1054,7 @@ class Shell {
     button(pauseQuit(),"Quit to desktop",false);
   }
   void startMap(const Puzzle& p) {
+    glowTime_=0;
     visited_.clear();
     map_=MountainTrail::generate(p);
     if(page_==Page::Task && round_->level==1) map_.activity=TrailActivity::Supplies;
@@ -972,7 +1092,23 @@ class Shell {
     else if(t==BayTarget::Pass && store_->hasMilestone(runner_.childId(),"mountain.bracken.copperhorn"))enterHollow();
     else if(t==BayTarget::Pass || t==BayTarget::Ridge)enterRise(t==BayTarget::Ridge);
     else if(t==BayTarget::Lodge)openJournal();
-    else life_.interact(t);
+    else {
+      if(t==BayTarget::Sol){
+        static constexpr const char* memories[]={
+          "You met the Copperhorn! I heard those hooves all the way down here.",
+          "A Moonkite stamp! Did its gold feather whistle past your ears?",
+          "You saw the Ember Fox! I wonder if those tiny paw prints are its.",
+          "You met Bellback! I'd know that little bell anywhere."
+        };
+        for(int i=3;i>=0;--i){
+          if(!stamps_[i])continue;
+          auto key=stampKey(i)+".sol";
+          if(store_->hasMilestone(activeId_,key))continue;
+          life_.solRemembers(memories[i]);store_->awardMilestone(activeId_,key);return;
+        }
+      }
+      life_.interact(t);
+    }
   }
   void interact() {
     if(page_==Page::Bay) {
@@ -1002,13 +1138,17 @@ class Shell {
       return;
     }
     if(page_==Page::Ridge){
+      if(rise_.finishLesson()){
+        store_->awardMilestone(activeId_,"tutorial.copperhorn.practice");chime("pickup");return;
+      }
       if(rise_.fighting()){
         rise_.strike();
         if(rise_.victory){
           store_->awardMilestone(runner_.childId(),"mountain.bracken.copperhorn");
           rise_.victory=false;chime("camp");
         }
-      }else if(rise_.cleared() && rise_.feet.y<51)enterHollow();
+      }else if(rise_.canGreet())rise_.greet();
+      else if(rise_.cleared() && rise_.feet.y<51)enterHollow();
       else if(rise_.feet.y>397){
         enterBay();
         if(ridgeFromBridge_)bayPosition_={91,164};
@@ -1053,7 +1193,7 @@ class Shell {
   std::vector<Rect> controls() const {
     std::vector<Rect> out;
     if(familyPage())return familyControls();
-    if(page_==Page::Guide)return {guideReturn()};
+    if(page_==Page::Guide){out.push_back(guideReturn());if(canLightWay())out.push_back(wayButton());return out;}
     if(page_==Page::Pause) return {pauseResume(),pauseGuide(),pauseSave(),pauseSound(),pauseFamily(),pauseQuit()};
     if(page_==Page::Climb && atCampOrTrail()) return {homeButton(0),homeButton(1),homeButton(2)};
     if(page_==Page::Expeditions) {
@@ -1063,6 +1203,7 @@ class Shell {
     }
     if(page_==Page::Reward)out.push_back(action);
     if(page_==Page::Bridge) {
+      if(bridgeCelebration_>=0)return {action};
       if(span_->complete()) out.push_back(action);
       else if(picked_==-1) {
         for(int i=0;i<3;++i)if(onRack(i))out.push_back(rackSlot(i));
@@ -1081,7 +1222,11 @@ class Shell {
     line.setOutlineColor(sf::Color(250,197,92));line.setOutlineThickness(3);window_.draw(line);
   }
   void gamepadButton(unsigned b) {
-    if(page_==Page::Guide){if(b==0 || b==1 || b==7)page_=guideFrom_;return;}
+    if(page_==Page::Guide){
+      if(b==0 && menuIndex_==1 && canLightWay())lightWay();
+      else if(b==0 || b==1 || b==7)page_=guideFrom_;
+      return;
+    }
     if(page_==Page::Guardian){
       if(b==0)useGuardian();
       if(b==1)guardian_.dodge();
@@ -1128,7 +1273,14 @@ class Shell {
   }
   void tick(float dt) {
     if(!window_.hasFocus())return;
+    if(glowing())glowTime_=std::max(0.f,glowTime_-dt);
+    else if(page_!=Page::Guide && page_!=Page::Pause)glowTime_=0;
     animationTime_+=dt;
+    if(page_==Page::Bridge && bridgeCelebration_>=0){
+      float old=bridgeCelebration_;bridgeCelebration_+=dt;
+      for(float tap:{.72f,1.14f})if(old<tap && bridgeCelebration_>=tap)chime("sol-tap");
+      if(bridgeCelebration_>=5.1f)bridgeCelebration_=-1;
+    }
     if(page_==Page::Climb && machine_.canAnswer() && !ropeOpen_)
       encounterTime_+=sf::seconds(dt);
     if (musicClock_.getElapsedTime().asSeconds()>1) { musicClock_.restart(); if(sound_)trailMusic(true); }
@@ -1175,11 +1327,11 @@ class Shell {
       if(page_==Page::Bay){
         auto next=bay_.move(bayPosition_,v.x*81*dt,v.y*81*dt,journal_.stages[0]==3);
         bool blocked=std::any_of(life_.folk.begin(),life_.folk.end(),[&](const auto& r){
+          if(life_.followingGuide() && &r!=&life_.folk[1])return false;
           return trail::WillowBay::near(next,r.feet,7) &&
             std::hypot(next.x-r.feet.x,next.y-r.feet.y)<std::hypot(bayPosition_.x-r.feet.x,bayPosition_.y-r.feet.y);
         });
         if(!blocked)bayPosition_=next;
-        if(!trail::WillowBay::near(bayPosition_,trail::WillowBay::plaza,22))showFirstSteps_=false;
       }
       else position_=map_.move(position_,v.x*99*dt,v.y*99*dt,ropeOpen_);
       walkTime_+=dt;
@@ -1220,9 +1372,10 @@ class Shell {
         if(i%7<5)rect({266+i,y+1,1,4-std::abs(i%7-2)},i%14<7?gold:sf::Color(214,122,118));
       }
     }
-    if(guide)bay_.guide(window_,bayPosition_,life_.point(goal),repaired,animationTime_);
+    if(guide)bay_.guide(window_,bayPosition_,life_.point(goal),repaired,animationTime_,glowing());
     auto feet=[&](int i){
       if(i==3)return bayPosition_;
+      if(i>=4)return life_.point(i==4?BayTarget::Fox:BayTarget::Tortoise);
       auto p=life_.folk[i].feet;
       if(i==2){
         // Kit steps aside to give Flick a clear line to the player's guard.
@@ -1231,10 +1384,17 @@ class Shell {
       }
       return p;
     };
-    std::array<int,4> order{0,1,2,3};
+    std::array<int,6> order{0,1,2,3,4,5};
     std::stable_sort(order.begin(),order.end(),[&](int a,int b){return feet(a).y<feet(b).y;});
     for(int i:order){
-      if(i==3)art_.hiker(window_,bayPosition_,direction_,moving_?int(walkTime_*8)%4:0);
+      if(i>=4){
+        int k=i-4;if(!life_.visitors[k])continue;
+        auto p=feet(i);sf::Sprite visitor(guardianArt_[k]);
+        visitor.setOrigin(visitor.getLocalBounds().width/2,visitor.getLocalBounds().height);
+        bool greeting=life_.inDialogue() && life_.speaker==(k==0?"Ember Fox":"Bellback");
+        float lift=greeting?(k==0?3.f:1.5f)*std::abs(std::sin(animationTime_*5)):0;
+        visitor.setPosition(std::round(p.x),std::round(p.y-lift));window_.draw(visitor);
+      }else if(i==3)art_.hiker(window_,bayPosition_,direction_,moving_?int(walkTime_*8)%4:0);
       else life_.drawPerson(window_,i,feet(i),i==2 && life_.sparring());
       bay_.drawForeground(window_,feet(i));
     }
@@ -1243,16 +1403,16 @@ class Shell {
     window_.setView(ui);
     rect({16,13,328,57},sf::Color(34,62,63,234));
     text(homecoming_?"KT  /  Willow Bay  /  Summit Flag":"KT  /  Willow Bay",28,15,18,paper,290,true);
-    text(life_.sparring()?"Wind moth practice":std::string("Follow gold arrows  /  ")+life_.label(goal),28,41,16,gold,298);
+    text(life_.sparring()?"Wind moth practice":life_.followingGuide()?"Follow Nia to Willow Bridge":std::string("Follow gold arrows  /  ")+life_.label(goal),28,41,16,gold,298);
     rect({689,13,254,38},sf::Color(34,62,63,234));
     text(padMode_?"Start   /   Field guide & save":"F1   Field guide     Esc   Camp",704,19,17,paper,225);
     const std::string use=padMode_?"A":"E";
     int bottom=int(uiHeight_);
-    if(showFirstSteps_ && guide && trail::WillowBay::near(bayPosition_,trail::WillowBay::plaza,22)){
+    if(life_.meetingGuide() && guide && trail::WillowBay::near(bayPosition_,trail::WillowBay::plaza,22)){
       rect({18,83,357,90},sf::Color(29,64,65,241));rect({18,83,5,90},gold);
       text("Your first steps",35,89,23,gold,318,true);
-      text(padMode_?"Push the stick to walk west.":"Press the left arrow to walk west.",35,121,18,paper,319);
-      text("Follow the gold trail to Willow Bridge.",35,146,17,paper,319);
+      text("Nia knows the way to Willow Bridge.",35,121,18,paper,319);
+      text(use+"   Talk to Nia by the gold marker.",35,146,17,paper,319);
     }
     if(life_.inDialogue()){
       rect({22,bottom-105,916,89},sf::Color(42,58,65,248));
@@ -1260,7 +1420,7 @@ class Shell {
       life_.portrait(window_,36,bottom-88);
       text(life_.speaker,96,bottom-101,19,gold,500,true);
       text(life_.line,96,bottom-74,21,paper,821);
-      text(use+(life_.offer()?"   Spar":"   Continue")+(life_.offer()?(padMode_?"      B   Leave":"      Esc   Leave"):""),96,bottom-45,15,gold);
+      text(use+(life_.inviting()?"   Walk with Nia":life_.offer()?"   Spar":"   Continue")+((life_.offer() || life_.inviting())?(padMode_?"      B   Leave":"      Esc   Leave"):""),96,bottom-45,15,gold);
       return;
     }
     std::string tip;
@@ -1282,6 +1442,7 @@ class Shell {
     if(credits_ || homecoming_){
       rect({243,72,10,6},sf::Color(218,109,89));rect({253,73+int(animationTime_*3)%2,4,4},gold);
     }else trail::WillowBay::beacon(window_,{242,72},animationTime_,6);
+    if(glowing())for(int n=i+1;n<7;++n)trail::WillowBay::beacon(window_,ridge[n],animationTime_,4);
     art_.hiker(window_,p,direction_,moving_ && !credits_?int(walkTime_*8)%4:0);
     window_.setView(ui);
     if(credits_){
@@ -1306,6 +1467,13 @@ class Shell {
     view.setViewport(ui.getViewport());window_.setView(view);
     if(hollow)hollow_.draw(window_,art_,direction_,moving_?int(walkTime_*8)%4:0);
     else rise_.draw(window_,art_,direction_,moving_?int(walkTime_*8)%4:0);
+    if(glowing() && !(hollow?hollow_.fighting():rise_.fighting()) && (hollow || !rise_.practicing())){
+      bool cleared=hollow?hollow_.cleared():rise_.cleared();
+      TrailPoint goal{192,cleared?38.f:142.f};
+      routeLights_.draw(window_,feet,goal,animationTime_,true,[&](TrailPoint p,TrailPoint q){
+        return hollow?(hollow_.clear(p) && hollow_.clear(q)):(rise_.clear(p) && rise_.clear(q));
+      });
+    }
     window_.setView(ui);
     rect({14,12,610,62},sf::Color(38,60,62,237));
     text(hollow?"KT   /   Glasswind Hollow":"KT   /   Bracken Rise",26,15,21,paper,355,true);
@@ -1319,12 +1487,22 @@ class Shell {
       }
     }
     std::string tip;
-    if(hollow?hollow_.fighting():rise_.fighting()){
+    if(!hollow && rise_.practicing()){
+      using Lesson=trail::BrackenRise::Lesson;
+      bool dodge=rise_.lesson==Lesson::Dodge,ready=rise_.lesson==Lesson::Ready;
+      rect({625,12,321,62},sf::Color(33,77,71,242));
+      text(ready?"Practice complete":dodge?"Practice 1 of 2   /   Dodge":"Practice 2 of 2   /   Parry",640,23,22,paper,292,true);
+      if(ready)tip=padMode_?"A   Finish practice and climb on":"E   Finish practice and climb on";
+      else if(dodge)tip=padMode_?"Point the stick sideways. Press B when the star shines.":"Face sideways. Press Space when the star shines.";
+      else tip=padMode_?"Press X when the star shines. The gust can't hurt you.":"Press Q when the star shines. The gust can't hurt you.";
+    }else if(hollow?hollow_.fighting():rise_.fighting()){
       rect({637,12,309,62},sf::Color(58,52,64,239));
       text("Hiker",650,16,16,paper,87,true);text(hollow?"Moonkite":"Copperhorn",778,16,16,paper,143,true);
       for(int i=0;i<(hollow?3:4);++i)rect({651+i*20,46,15,8},i<(hollow?hollow_.hearts:rise_.hearts)?sf::Color(122,211,166):muted);
       for(int i=0;i<3;++i)rect({779+i*33,46,27,8},i<(hollow?hollow_.guard:rise_.guard)?sf::Color(237,154,104):muted);
       tip=padMode_?"Stick / D-pad   Move       B   Dodge       X   Parry       A   Strike":"WASD / arrows   Move       Space   Dodge       Q   Parry       E   Strike";
+    }else if(hollow?hollow_.canGreet():rise_.canGreet()){
+      tip=std::string(padMode_?"A":"E")+"   Say hi to "+(hollow?"the Moonkite":"the Copperhorn");
     }else if(hollow){
       std::string use=padMode_?"A":"E";
       tip=hollow_.atExit()?use+"   Continue to the upper mountain":hollow_.atEntry()?use+"   Descend to Bracken Rise":use+"   Inspect a pool or bell       Follow the lanterns uphill";
@@ -1418,6 +1596,22 @@ class Shell {
         }
       }
     }
+    if(glowing() && !map_.markers.empty()){
+      TrailPoint goal=map_.rope;
+      if(!ropeOpen_){
+        if(supply && carrying_>=0)goal=map_.camp;
+        else if(beforeCreek){
+          int x=std::abs(position_.x-map_.crossings[0])<std::abs(position_.x-map_.crossings[1])?map_.crossings[0]:map_.crossings[1];
+          goal={float(x),float(map_.creekY(float(x))-16)};
+        }else{
+          goal={map_.markers[map_.markers.size()/2].x,300};
+          for(auto m:map_.markers)trail::WillowBay::beacon(window_,m,animationTime_,26);
+        }
+      }
+      routeLights_.draw(window_,position_,goal,animationTime_,true,[&](TrailPoint a,TrailPoint b){
+        auto next=map_.move(a,b.x-a.x,b.y-a.y,ropeOpen_);return next.x==b.x && next.y==b.y;
+      });
+    }
     art_.hiker(window_,position_,direction_, moving_ ? int(walkTime_*8)%4 : 0);
     if(carrying_>=0)rect({int(position_.x)-4,int(position_.y)-29,8,6},gold);
     window_.setView(ui);
@@ -1507,12 +1701,16 @@ class Shell {
   trail::BayLife life_;
   trail::BrackenRise rise_;
   trail::Glasswind hollow_;
-  bool showFirstSteps_=false;
   trail::PassGuardian guardian_;
   std::array<sf::Texture,2> guardianArt_;
-  Page guideFrom_=Page::Bay;
+  Page guideFrom_=Page::Bay,glowScene_=Page::Bay;
+  trail::TrailLights routeLights_;
+  float glowTime_=0;
   std::string lastCamp_,saveNotice_,storePreview_;
-  sf::Texture peakArt_;
+  sf::Texture peakArt_,stampArt_;
+  std::array<bool,4> stamps_{};
+  std::string_view lastCue_;
+  float bridgeCelebration_=-1;
   float peakProgress_=0;
   bool owlCleared_=false,homecoming_=false,credits_=false;
   bool ridgeFromBridge_=false;

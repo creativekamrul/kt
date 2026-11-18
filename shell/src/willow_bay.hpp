@@ -7,6 +7,7 @@
 #include <vector>
 #include <array>
 #include "sdp/mountain.hpp"
+#include "trail_lights.hpp"
 
 namespace trail {
 class WillowBay {
@@ -73,51 +74,12 @@ class WillowBay {
   }
   // Sample the walking mask on a four-pixel grid. The same closed crossing
   // that stops the hiker also stops the guidance trail.
-  void guide(sf::RenderTarget& t,Point player,Point goal,bool repaired,float clock) {
-    constexpr int cols=128,rows=86;
-    auto index=[](Point p){return std::clamp(int(p.y)/4,0,85)*128+std::clamp(int(p.x)/4,0,127);};
-    auto center=[](int i){return Point{float((i%128)*4+2),float((i/128)*4+2)};};
-    const int dest=index(goal);
-    if(dest!=guideGoal_ || repaired!=guideRepaired_){
-      guideGoal_=dest;guideRepaired_=repaired;next_.fill(-1);
-      std::vector<int> open{dest};next_[dest]=dest;
-      for(size_t k=0;k<open.size();++k){
-        const int at=open[k];auto p=center(at);
-        for(int delta:{1,-1,cols,-cols}){
-          int n=at+delta;
-          if(n<0 || n>=cols*rows || next_[n]>=0)continue;
-          auto q=center(n);if(std::abs(p.x-q.x)>4)continue;
-          auto actual=move(p,q.x-p.x,q.y-p.y,repaired);
-          if(actual.x!=q.x || actual.y!=q.y)continue;
-          next_[n]=at;open.push_back(n);
-        }
-      }
-    }
-    int node=index(player);
-    // A foot can stand between grid samples at the water's edge.
-    if(next_[node]<0){
-      float best=12;
-      for(int dy=-2;dy<=2;++dy)for(int dx=-2;dx<=2;++dx){
-        int n=index({player.x+4*dx,player.y+4*dy});
-        auto p=center(n);float d=std::hypot(p.x-player.x,p.y-player.y);
-        if(next_[n]>=0 && d<best){best=d;node=n;}
-      }
-    }
-    int phase=int(clock*3)%3;
-    for(int step=0;node>=0 && node!=dest && step<21;++step){
-      int forward=next_[node];if(forward<0)break;
-      if(step==5 || step==11 || step==17){
-        auto p=center(node),q=center(forward);
-        int x=int(p.x),y=int(p.y),dx=int(q.x-p.x)/4,dy=int(q.y-p.y)/4;
-        unsigned color=(step-5)/6==phase?0xffe9a1:0xf5c974;
-        for(int layer=0;layer<2;++layer)for(int i=-3;i<=3;++i){
-          int px=x+dx*(3-std::abs(i))-dy*i,py=y+dy*(3-std::abs(i))+dx*i;
-          if(layer==0)box(t,px-1,py-1,4,4,0x855c46);
-          else box(t,px,py,2,2,color);
-        }
-      }
-      node=forward;
-    }
+  void guide(sf::RenderTarget& t,Point player,Point goal,bool repaired,float clock,bool bright=false) {
+    if(repaired!=guideRepaired_){guideRepaired_=repaired;lights_.reset();}
+    lights_.draw(t,player,goal,clock,bright,[&](Point p,Point q){
+      auto actual=move(p,q.x-p.x,q.y-p.y,repaired);
+      return actual.x==q.x && actual.y==q.y;
+    });
   }
   static void beacon(sf::RenderTarget& t,Point goal,float time,int above){
     int x=int(goal.x),y=int(goal.y)-above-int(1.8f*std::sin(time*4));
@@ -133,9 +95,8 @@ class WillowBay {
   }
   struct Prop { int x,y,base,top,w,h; };
   std::vector<Prop> props_;
-  int guideGoal_=-1;
+  TrailLights lights_;
   bool guideRepaired_=false;
-  std::array<int,128*86> next_{};
   sf::Texture ground_,front_;
   sf::Image walk_;
 };

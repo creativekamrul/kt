@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 project(sdp100_adaptive_game
-        VERSION 1.2.0
+        VERSION 1.2.2
         DESCRIPTION "Adaptive learning puzzle game - portable core + shells"
         LANGUAGES C CXX)
 

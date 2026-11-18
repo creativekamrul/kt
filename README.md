@@ -10,6 +10,7 @@ KT is an offline pixel-art mountain adventure for Windows. Your first landmark i
 
 | Build | What you can play |
 |---|---|
+| [Release 1.2.2](https://github.com/creativekamrul/kt/releases/tag/v1.2.2) | Follow Nia to Willow Bridge, practice with a harmless gust, and light the trail with **Show me the way**. Collect guardian stamps, talk to Sol about them, and greet the guardians after their fights. |
 | [Earlier release 1.0.0](https://github.com/creativekamrul/kt/releases/tag/v1.0.0) | The complete climb from Willow Bay to the summit, two guardians, bridge repair, village errands, adaptive trails and four expeditions. |
 | [Release 1.2.0](https://github.com/creativekamrul/kt/releases/tag/v1.2.0) | Adds the Ember Fox and Bellback Tortoise, brighter scenery, a field guide, per-climber camp saves and a parent report. The screenshots on this page and in the guide come from this build. |
 

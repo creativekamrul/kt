@@ -20,7 +20,7 @@ class Glasswind {
   void enter(bool open,bool downhill){
     feet=downhill?Point{192,45}:Point{192,391};
     facing={0,downhill?1.f:-1.f};bird={192,84};phase=open?Phase::Open:Phase::Trail;
-    gift_=Gift::None;victory=false;hearts=guard=3;reset();
+    gift_=Gift::None;hello_=0;victory=false;hearts=guard=3;reset();
   }
   bool fighting()const{return phase!=Phase::Trail && phase!=Phase::Open;}
   bool cleared()const{return phase==Phase::Open;}
@@ -40,7 +40,9 @@ class Glasswind {
   }
   void dodge(){if(dodgeCd_<=0 && parry_<=0){dash_=facing;dodge_=.23f;dodgeCd_=.62f;}}
   void parry(){if(fighting() && dodge_<=0 && parryCd_<=0){parry_=.31f;parryCd_=.58f;}}
+  bool canGreet()const{return cleared() && near(bird,30);}
   void use(){
+    if(canGreet()){hello_=1.1f;say("The Moonkite hops closer and chirps hello.",2.5f);return;}
     if(phase==Phase::Trail && gift_==Gift::None){
       if(near({98,237},21)){gift_=Gift::Ward;say("Mirror ward earned. It will catch one hit.");}
       else if(near({266,253},21)){gift_=Gift::Bell;say("The bell answers. The moonkite will perch longer.");}
@@ -49,7 +51,7 @@ class Glasswind {
     }
   }
   void update(float dt,Point input){
-    anim_+=dt;timer_+=dt;
+    anim_+=dt;timer_+=dt;hello_=std::max(0.f,hello_-dt);
     for(float* p:{&dodgeCd_,&parryCd_,&safe_,&noteTime_,&swing_})*p=std::max(0.f,*p-dt);
     if(dodge_>0)move(dash_,dt*200);
     else if(std::hypot(input.x,input.y)>.05f){facing=direction({},input);move(input,dt*78);}
@@ -107,7 +109,7 @@ class Glasswind {
     auto drawBird=[&]{
       int f=phase==Phase::Perch || cleared()?3:int(anim_*6)%4;
       sf::Sprite sprite(owl_,{f*48,0,48,38});sprite.setOrigin(24,31);
-      sprite.setPosition(std::round(bird.x),std::round(bird.y+(fighting() && phase!=Phase::Perch?std::sin(anim_*4)*2:0)));
+      sprite.setPosition(std::round(bird.x),std::round(bird.y-5*std::abs(std::sin(hello_*6))+ (fighting() && phase!=Phase::Perch?std::sin(anim_*4)*2:0)));
       t.draw(sprite);
     };
     if(feet.y>=bird.y)drawBird();
@@ -118,6 +120,13 @@ class Glasswind {
       float a=i*.3927f;dot(t,feet.x+11*std::cos(a),feet.y-8+9*std::sin(a),2,2,parry_>0?0x80e6d5:0xffdc86);
     }
   }
+  bool clear(Point p)const{
+    if(p.x<4 || p.x>=380 || p.y<18 || p.y>=414)return false;
+    if(fighting()){float x=(p.x-192)/86,y=(p.y-95)/52;if(x*x+y*y>1)return false;}
+    if(!cleared() && p.y<43)return false;
+    for(int x:{-2,2})if(mask_.getPixel(unsigned(p.x+x),unsigned(p.y)).r<128)return false;
+    return true;
+  }
  private:
   enum class Gift {None,Ward,Bell};
   struct Shot{Point pos,dir;bool live=false;};
@@ -127,7 +136,7 @@ class Glasswind {
   Gift gift_=Gift::None;
   int drops_=0;
   bool fell_=false,ward_=false;
-  float anim_=0,timer_=0,dodge_=0,dodgeCd_=0,parry_=0,parryCd_=0,safe_=0,noteTime_=0,swing_=0;
+  float hello_=0,anim_=0,timer_=0,dodge_=0,dodgeCd_=0,parry_=0,parryCd_=0,safe_=0,noteTime_=0,swing_=0;
   std::string note_;
   bool near(Point p,float r)const{return std::hypot(p.x-feet.x,p.y-feet.y)<=r;}
   static Point direction(Point a,Point b){float dx=b.x-a.x,dy=b.y-a.y,l=std::hypot(dx,dy);return l>.001f?Point{dx/l,dy/l}:Point{0,1};}
@@ -148,13 +157,6 @@ class Glasswind {
     safe_=.7f;
     if(ward_){ward_=false;say("The mirror ward caught it!");return;}
     if(--hearts<=0){feet={192,134};restart();say("Breathe. Watch the feather and try again.");}
-  }
-  bool clear(Point p)const{
-    if(p.x<4 || p.x>=380 || p.y<18 || p.y>=414)return false;
-    if(fighting()){float x=(p.x-192)/86,y=(p.y-95)/52;if(x*x+y*y>1)return false;}
-    if(!cleared() && p.y<43)return false;
-    for(int x:{-2,2})if(mask_.getPixel(unsigned(p.x+x),unsigned(p.y)).r<128)return false;
-    return true;
   }
   void move(Point d,float n){
     Point x{feet.x+d.x*n,feet.y};if(clear(x))feet=x;
