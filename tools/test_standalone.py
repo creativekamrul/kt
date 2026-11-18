@@ -37,17 +37,16 @@ def launch(exe, working_dir, home, save):
                                env={**os.environ, "LOCALAPPDATA":str(home)})
     try:
         window = window_for(process)
-        for _ in range(100):
-            if save.is_file():
-                with closing(sqlite3.connect(save)) as db:
-                    if db.execute("SELECT count(*) FROM sqlite_master WHERE name='children'").fetchone()[0]:
-                        if db.execute("SELECT count(*) FROM children").fetchone()[0]: break
-            time.sleep(.1)
-        else:
-            raise RuntimeError("KT failed to initialize the player database")
-        time.sleep(.3)
-        user32.PostMessageW(window, 0x10, 0, 0)
-        if process.wait(timeout=15) != 0: raise RuntimeError("KT failed to close normally")
+        # KT creates its window before it initializes SQLite. The close event
+        # is handled by the game loop once startup is complete.
+        if not user32.PostMessageW(window, 0x10, 0, 0):
+            raise RuntimeError("Could not request a normal game shutdown")
+        code = process.wait(timeout=60)
+        if code:
+            raise RuntimeError(f"KT exited with code {code} during the startup check")
+        with closing(sqlite3.connect(save.as_uri() + "?mode=ro", uri=True)) as db:
+            if not db.execute("SELECT 1 FROM children WHERE name='Player'").fetchone():
+                raise RuntimeError("KT did not save the player profile")
     finally:
         if process.poll() is None:
             process.terminate()
