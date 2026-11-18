@@ -1,13 +1,27 @@
 name: Windows game
-on: [push, pull_request, workflow_dispatch]
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      source_tag:
+        description: Existing release tag to rebuild
+        required: false
+        type: string
 permissions:
   contents: read
 
 jobs:
   windows:
     runs-on: windows-2022
+    # Compile for the Windows x64 baseline even when the runner supports AVX-512.
+    env:
+      CFLAGS: "-target x86_64-windows-gnu -mcpu=baseline"
+      CXXFLAGS: "-target x86_64-windows-gnu -mcpu=baseline"
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.source_tag || github.sha }}
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'

@@ -1,1 +1,1 @@
-@python -m ziglang cc %*
+@python -m ziglang cc -target x86_64-windows-gnu -mcpu=baseline %*
