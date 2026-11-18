@@ -35,6 +35,12 @@ class StoreError : public std::runtime_error {
   explicit StoreError(const std::string& message) : std::runtime_error(message) {}
 };
 
+struct AreaPlay {
+  std::string area;
+  int seconds = 0;
+  std::string last_played;
+};
+
 class IDataStore {
  public:
   virtual ~IDataStore() = default;
@@ -65,6 +71,12 @@ class IDataStore {
   virtual void awardMilestone(int child_id, std::string_view milestone) = 0;
   virtual std::vector<Milestone> milestones(int child_id) const = 0;
   virtual bool hasMilestone(int child_id, std::string_view milestone) const = 0;
+
+  virtual void saveCamp(int child_id, const std::string& camp) = 0;
+  virtual std::string savedCamp(int child_id) const = 0;
+
+  virtual void recordPlay(int child_id, const std::string& area, int seconds) = 0;
+  virtual std::vector<AreaPlay> areaPlay(int child_id) const = 0;
 
   // ---- analytics ----------------------------------------------------------
   /// The analytics query from the design document: success rate per sub-skill

@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "sdp/store.hpp"
+#include "../shell/src/family_report.hpp"
 #include "test_framework.hpp"
 
 using namespace sdp;
@@ -23,6 +24,21 @@ void exerciseStore(IDataStore& store) {
   CHECK_EQ(profile->age, 8);
   CHECK(!store.child(child + 999).has_value());
   CHECK_EQ(store.children().size(), static_cast<std::size_t>(1));
+
+  const int sibling=store.createChild("Robin",7);
+  store.recordPlay(sibling,"Bracken Rise",17);
+  store.recordPlay(sibling,"Bracken Rise",9);
+  CHECK_EQ(store.areaPlay(sibling).at(0).seconds,26);
+  CHECK(store.areaPlay(child).empty());
+  store.saveCamp(sibling,"Bracken Rise");
+  CHECK_EQ(store.savedCamp(sibling),std::string("Bracken Rise"));
+  CHECK(store.savedCamp(child).empty());
+  store.resetProgress(sibling);
+  CHECK(store.savedCamp(sibling).empty());
+  CHECK(store.areaPlay(sibling).empty());
+  store.recordPlay(sibling,"Willow Bay",11);
+  store.deleteChild(sibling);
+  CHECK(store.areaPlay(sibling).empty());
 
   Attempt attempt;
   attempt.child_id = child;
@@ -208,4 +224,30 @@ SDP_TEST(store, seven_day_window_excludes_old_attempts) {
 
   CHECK_EQ(store->historyWithin(child, 7).size(), static_cast<std::size_t>(1));
   CHECK_EQ(store->history(child).size(), static_cast<std::size_t>(2));
+}
+
+SDP_TEST(store, family_report_keeps_each_climbers_activity_separate) {
+  auto store = openMemoryStore();
+  const int ada = store->createChild("Ada", 8);
+  const int robin = store->createChild("Robin", 9);
+  store->recordPlay(ada, "Willow Bay", 40);
+  store->recordPlay(robin, "Glasswind Hollow", 80);
+  store->awardMilestone(ada, "bay.pennant.raised");
+  Attempt answer;
+  answer.child_id = ada;
+  answer.skill = skills::Counting;
+  answer.correct = true;
+  store->logAttempt(answer);
+  answer.correct = false;
+  store->logAttempt(answer);
+  const auto report = trail::FamilyReport::read(*store, ada, {});
+  CHECK_EQ(report.seconds, 40);
+  CHECK_EQ(report.skills.size(), std::size_t(1));
+  CHECK_EQ(report.skills.front().correct, 1);
+  CHECK_EQ(report.attempts, 2);
+  CHECK_EQ(report.events.size(), std::size_t(4));
+  const auto sibling = trail::FamilyReport::read(*store, robin, {});
+  CHECK_EQ(sibling.seconds, 80);
+  CHECK_EQ(sibling.attempts, 0);
+  CHECK_EQ(sibling.events.size(), std::size_t(1));
 }

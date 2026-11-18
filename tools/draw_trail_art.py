@@ -25,8 +25,8 @@ def tree(kind):
             x=25
             points=[(x,top),(x+w,base-5),(x+w-1,base),(x+w//2,base-2),(x+4,base+2),(x-3,base),(x-w//2,base+1),(x-w,base-3)]
             d.polygon(points,fill='#284d4d')
-            d.polygon([(x,top),(x+3,top+7),(x+w-4,base-6),(x+3,base-4),(x-4,base-1),(x-w+1,base-4)],fill='#537f88' if snow else '#398467')
-            d.polygon([(x,top),(x+1,top+5),(x-4,base-10),(x-10,base-6),(x-w+3,base-6)],fill='#d9eee2' if snow else '#82b967')
+            d.polygon([(x,top),(x+3,top+7),(x+w-4,base-6),(x+3,base-4),(x-4,base-1),(x-w+1,base-4)],fill='#537f88' if snow else '#28876b')
+            d.polygon([(x,top),(x+1,top+5),(x-4,base-10),(x-10,base-6),(x-w+3,base-6)],fill='#d9eee2' if snow else '#85c966')
             for j in range(5):
                 px=rng.randrange(x-w//2,x+w//2); py=rng.randrange(base-9,base-4)
                 d.line((px,py,px+2,py-1),fill='#89a68d' if snow else '#70905e')
@@ -68,13 +68,13 @@ w,h=480,270
 im,d=canvas(w,h)
 for y in range(h):
     a=min(1,y/160)
-    col=tuple(int(p+(q-p)*a) for p,q in zip((107,147,157),(250,206,147)))
+    col=tuple(int(p+(q-p)*a) for p,q in zip((79,162,189),(255,207,142)))
     d.line((0,y,w,y),fill=col)
 d.ellipse((309,41,340,72),fill='#ffe4aa')
 for i in range(23):
     x=rng.randrange(w);y=rng.randrange(16,89);n=rng.randrange(10,43)
     d.line((x,y,x+n,y),fill='#eac9ab',width=2)
-for base,amp,col,highlight in [(115,44,'#9697a2','#c7b7ab'),(125,54,'#757f92','#b1a5a0'),(139,58,'#526e77','#91a096')]:
+for base,amp,col,highlight in [(115,44,'#a69ac1','#c7b7ab'),(125,54,'#7a88ae','#b1a5a0'),(139,58,'#437a89','#91a096')]:
     pts=[(-30,base)]
     for x in range(-25,520,20):pts.append((x,base-rng.randrange(2,amp)))
     d.polygon(pts+[(500,170),(-30,170)],fill=col)
@@ -83,19 +83,19 @@ for base,amp,col,highlight in [(115,44,'#9697a2','#c7b7ab'),(125,54,'#757f92','#
         if pts[i-1][1]>y and pts[i+1][1]>y:
             d.polygon([(x,y),(x+11,(y+pts[i+1][1])//2),(x+5,y+8),(x+1,y+5),(x-8,y+14)],fill=highlight)
 for y in range(151,246):
-    d.line((0,y,w,y),fill=('#8fb1a3' if y<174 else '#75a59d'))
+    d.line((0,y,w,y),fill=('#65c7be' if y<174 else '#43b5ae'))
     for i in range(10):
-        x=rng.randrange(w); d.line((x,y,x+rng.randrange(2,20),y),fill=rng.choice(['#aec2a8','#65938e','#e6c595']))
+        x=rng.randrange(w); d.line((x,y,x+rng.randrange(2,20),y),fill=rng.choice(['#a2ded0','#349c9e','#e6c595']))
 for side in (0,1):
     for i in range(24):
         x=(i*9-60) if side==0 else (326+i*9)
         y=int(159+(max(0,142-x) if side==0 else max(0,x-330))*.28)
         spr=pine.resize((23,35),Image.Resampling.NEAREST);im.alpha_composite(spr,(x,y-35))
-d.polygon([(0,200),(76,187),(142,191),(200,204),(222,219),(306,222),(385,194),(479,182),(480,270),(0,270)],fill='#596f52')
+d.polygon([(0,200),(76,187),(142,191),(200,204),(222,219),(306,222),(385,194),(479,182),(480,270),(0,270)],fill='#42825d')
 d.polygon([(95,270),(156,232),(175,221),(157,211),(181,213),(202,220),(195,228),(151,270)],fill='#c39967')
 for i in range(590):
     x=rng.randrange(w);y=rng.randrange(208,270)
-    if im.getpixel((x,y))[:3] == (89,111,82):d.line((x,y,x+1,y-2),fill=rng.choice(['#84915c','#4b6952','#ad9e62']))
+    if im.getpixel((x,y))[:3] == (66,130,93):d.line((x,y,x+1,y-2),fill=rng.choice(['#83ac67','#33725a','#b9b765']))
 im.alpha_composite(cabin,(56,151))
 for x,y in [(-18,155),(7,167),(382,143),(407,157),(448,172)]:im.alpha_composite(willow if x<10 else pine,(x,y))
 im.convert('RGB').save(OUT/'willow-bay.png')

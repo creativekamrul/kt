@@ -9,19 +9,19 @@ class WillowCreek {
  public:
   WillowCreek() {
     if (!scene_.create(240, 73)) throw std::runtime_error("Could not create creek scenery");
-    scene_.clear(sf::Color(60,161,167));
+    scene_.clear(sf::Color(34,174,182));
     for (int y=0; y<73; ++y) {
       int bend = int(6 * std::sin(y / 12.0));
       for (int side : {0,1}) {
         int edge = (side ? 194 : 42) + bend;
         strip(side ? edge : 0,y,side ? 240-edge : edge,1,0x526c58);
         strip(side ? edge+3 : 0,y,side ? 240-edge-3 : edge-3,1,0xc39e72);
-        strip(side ? edge+5 : 0,y,side ? 240-edge-5 : edge-5,1,0x87b767);
+        strip(side ? edge+5 : 0,y,side ? 240-edge-5 : edge-5,1,0x7dc768);
       }
     }
     for (int i=0; i<125; ++i) {
       int x=54+(i*47)%130, y=(i*31)%73;
-      strip(x,y,2+i%8,1,i%3 ? 0x88cfbe : 0x37959e);
+      strip(x,y,2+i%8,1,i%3 ? 0x92e1cb : 0x228f9d);
     }
     for (int i=0; i<55; ++i) {
       int x=(i*17)%33+(i%2 ? 204 : 0), y=(i*27)%72;

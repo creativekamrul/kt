@@ -17,19 +17,19 @@ def band(g,pts,width,colour):
     for x,y in pts:g.ellipse((x-r,y-r,x+r,y+r),fill=colour)
 for y in range(420):
     t=y/420
-    d.line((0,y,383,y),fill=(int(60+43*t),int(67+28*t),int(117+27*t)))
+    d.line((0,y,383,y),fill=(int(48+47*t),int(58+27*t),int(126+38*t)))
 for _ in range(330):
     x=rng.randrange(384);y=rng.randrange(420)
     d.point((x,y),fill="#aeb7d2")
 for y in [25,110,190,295,376]:
     for i in range(18):
         x=rng.randrange(-20,385);yy=y+rng.randrange(-8,10)
-        d.line((x,yy,x+rng.randrange(10,38),yy),fill="#8388ac",width=2)
-for pts,w,soil in [(west,24,"#94b7be"),(east,19,"#ba9fae"),([(192,408),(192,351)],28,"#a9aabc"), ([(192,137),(192,28)],19,"#a9aabc")]:
+        d.line((x,yy,x+rng.randrange(10,38),yy),fill="#878fc0",width=2)
+for pts,w,soil in [(west,24,"#8ac8cf"),(east,19,"#cea5c5"),([(192,408),(192,351)],28,"#b2b4d4"), ([(192,137),(192,28)],19,"#b2b4d4")]:
     for dy,off,c in [(15,16,"#424867"),(9,14,"#615a7e"),(4,12,"#847494"),(0,10,"#777e9c"),(0,5,"#a8c5c3"),(0,0,soil)]:
         band(d,[(x,y+dy) for x,y in pts],w+off,c)
     band(m,pts,w+3,255)
-for box,c in [((97,47,287,160),"#514e71"),((97,42,287,152),"#867694"),((99,39,285,147),"#9da4be"),((105,44,279,143),"#abb2c9")]:
+for box,c in [((97,47,287,160),"#514e71"),((97,42,287,152),"#867694"),((99,39,285,147),"#9da4be"),((105,44,279,143),"#b7bfdc")]:
     d.ellipse(box,fill=c)
 m.ellipse((102,42,282,146),fill=255)
 for _ in range(3800):
@@ -38,7 +38,7 @@ for _ in range(3800):
         d.line((x,y,x+2,y),fill=rng.choice(["#a8b7c8","#adadb9","#c0c9cf"]))
 def prism(x,y,h):
     d.polygon([(x-4,y),(x-5,y-h+5),(x-1,y-h),(x+3,y-h+3),(x+4,y-2)],fill="#5f7298")
-    d.polygon([(x-3,y-2),(x-4,y-h+5),(x-1,y-h+1),(x,y-h+5),(x,y-2)],fill="#94e7d5")
+    d.polygon([(x-3,y-2),(x-4,y-h+5),(x-1,y-h+1),(x,y-h+5),(x,y-2)],fill="#85f4d7")
     d.line((x,y-h+5,x+2,y-h+3,x+2,y-3),fill="#76b9c6")
 for x,y in [(114,325),(49,273),(84,222),(63,199),(144,166),(111,70),(255,56),(267,128)]:
     for j in range(3):prism(x+5*j,y+(j%2)*3,8+rng.randrange(12))
@@ -47,7 +47,7 @@ for x,y in [(153,339),(74,292),(87,251),(105,193)]:
 for x,y in east[1:-1]:
     d.line((x-9,y-1,x-9,y-18,x-2,y-18),fill="#73566d",width=2)
     d.line((x-3,y-18,x-3,y-13),fill="#edd3a8")
-    d.polygon([(x-5,y-13),(x-1,y-13),(x,y-9),(x-6,y-9)],fill="#f4b867")
+    d.polygon([(x-5,y-13),(x-1,y-13),(x,y-9),(x-6,y-9)],fill="#ffbe59")
     d.point((x-3,y-8),fill="#fff2b4")
 for x,y in [(175,43),(206,44),(177,381)]:
     d.rectangle((x,y-16,x+1,y),fill="#625772")
@@ -106,9 +106,9 @@ atlas.save(out/"moonkite.png")
 # Summit approach above the cloud line, with the path cut into the foreground ridge.
 peak=Image.new("RGB",(320,180));g=ImageDraw.Draw(peak)
 for y in range(180):
-    t=min(1,y/128);g.line((0,y,319,y),fill=(int(109+136*t),int(146+55*t),int(195-36*t)))
+    t=min(1,y/128);g.line((0,y,319,y),fill=(int(84+166*t),int(149+54*t),int(212-57*t)))
 g.ellipse((198,23,229,54),fill="#ffdf99")
-for y,amp,c in [(78,24,"#9c9eb8"),(98,34,"#83869f"),(114,40,"#666e8a")]:
+for y,amp,c in [(78,24,"#aa9ec4"),(98,34,"#898db6"),(114,40,"#5b7198")]:
     pts=[(x,y+rng.randrange(-amp,amp)) for x in range(-15,350,27)]
     g.polygon([(0,180)]+pts+[(340,180)],fill=c)
     for i in range(1,len(pts)-1):
@@ -119,6 +119,6 @@ for _ in range(75):
     x=rng.randrange(320);y=rng.randrange(109,151);g.line((x,y,x+rng.randrange(4,30),y),fill="#c1b9c3")
 g.polygon([(36,180),(57,145),(104,139),(148,112),(191,116),(224,84),(264,85),(280,99),(267,112),(225,133),(212,154),(166,180)],fill="#74697e")
 summit=[(75,174),(95,153),(119,155),(153,129),(191,131),(214,114),(237,95)]
-band(g,summit,20,"#9e99ac");band(g,summit,14,"#e6e0cf")
+band(g,summit,20,"#9e99ac");band(g,summit,14,"#f2f1dd")
 for x,y in [(70,166),(144,136),(206,120),(233,96)]:g.line((x,y,x+4,y-2),fill="#b5b0b4",width=2)
 peak.save(out/"summit-walk.png")

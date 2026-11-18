@@ -9,6 +9,7 @@ add_executable(sdp_tests
   test_bandit.cpp
   test_engine.cpp
   test_generator.cpp
+  test_pass_guardians.cpp
   test_store.cpp
   test_campaign.cpp
   test_progression.cpp

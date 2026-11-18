@@ -1,6 +1,6 @@
-# KT player guide
+﻿# KT player guide
 
-Follow one climber from the village to the summit. The screenshots below were captured during a playthrough of development build 1.2. The bridge, lower guardians, expeditions and summit are also playable in the [Windows 1.0 release](https://github.com/creativekamrul/kt/releases/tag/v1.0.0).
+Follow one climber from the village to the summit. The screenshots below were captured during a playthrough of version 1.2. The bridge, lower guardians, expeditions and summit are also playable in the [Windows 1.0 release](https://github.com/creativekamrul/kt/releases/tag/v1.0.0).
 
 ## From the village to the bridge
 
@@ -26,7 +26,7 @@ Inspect the **Mirror Pools** for a ward that absorbs one hit, or ring the **Bell
 
 ![The Moonkite spreads its wings above the climber in the purple roost](screenshots/moonkite.png)
 
-### Two more guardians in development build 1.2
+### Two more guardians in version 1.2
 
 | Ember Fox at altitude 12 | Bellback Tortoise at altitude 36 |
 |---|---|
@@ -56,7 +56,7 @@ At altitude **90**, walk up and right along the snowy ridge. Press **E / A** bes
 
 KT saves progress locally on the Windows account. Guardian victories, finished expedition stages and village errands persist between visits. The north pass in Willow Bay takes you back toward your unlocked mountain areas.
 
-In **development build 1.2**, pick a nickname at the lodge. Each climber has a separate save. Entering an area sets a camp automatically, and **Pause > Save game** saves the current camp manually. Select **Continue** beneath the nickname to return. The upper trail resumes at the saved altitude. An unfinished guardian battle starts fresh.
+In **version 1.2**, pick a nickname at the lodge. Each climber has a separate save. Entering an area sets a camp automatically, and **Pause > Save game** saves the current camp manually. Select **Continue** beneath the nickname to return. The upper trail resumes at the saved altitude. An unfinished guardian battle starts fresh.
 
 Choose the climber and open **Parent report** to see focused play time by place, correct answers and attempts by skill, and dated activity such as a delivered errand or cleared guardian. Menus and time with the game in the background are excluded. Time tracking starts with version 1.1. The report below uses a demonstration profile.
 

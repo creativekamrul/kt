@@ -23,17 +23,17 @@ class MountainArt {
   void generate(const sdp::MountainTrail& t,int zone) {
     sdp::Rng rng(t.seed);
     const bool snow=zone>=2;
-    const sf::Color grasses[]={sf::Color(124,182,106),sf::Color(213,165,101),
-                               sf::Color(179,211,198),sf::Color(222,235,235)};
-    const sf::Color shades[]={sf::Color(111,172,100),sf::Color(199,153,100),
-                              sf::Color(158,196,189),sf::Color(203,221,229)};
+    const sf::Color grasses[]={sf::Color(109,194,105),sf::Color(228,167,92),
+                               sf::Color(157,218,207),sf::Color(222,235,235)};
+    const sf::Color shades[]={sf::Color(86,176,105),sf::Color(211,148,86),
+                              sf::Color(129,201,198),sf::Color(203,221,229)};
     const sf::Color grass=grasses[std::clamp(zone,0,3)],shade=shades[std::clamp(zone,0,3)];
     sf::Image ground; ground.create(480,500,grass);
     for (int y=0;y<500;++y) for (int x=0;x<480;++x) {
       float noise=std::sin(x*.047+std::sin(y*.039)*2)+std::cos(y*.06+x*.03);
       if (noise>1) ground.setPixel(x,y,shade);
       const int bank=23+int(9*std::sin(y*.035+t.seed%17));
-      if (x<bank) ground.setPixel(x,y, x>bank-3 ? sf::Color(206,181,130) : sf::Color(56,157,164));
+      if (x<bank) ground.setPixel(x,y, x>bank-3 ? sf::Color(206,181,130) : sf::Color(32,169,178));
       else if (noise<-.4 && (x+y*3)%47==0) ground.setPixel(x,y,snow ? sf::Color::White : sf::Color(200,190,115));
     }
     sf::Texture base;base.loadFromImage(ground);map_.draw(sf::Sprite(base));
@@ -45,7 +45,7 @@ class MountainArt {
         if(i%6==0) box(map_,x-1,y-1,3,2,snow ? 0xf2eee0 : (i%2 ? 0xe6bd7a : 0xdcd29a));
       }
     }
-    const sf::Color dirt=snow ? sf::Color(180,185,181) : sf::Color(232,195,139);
+    const sf::Color dirt=snow ? sf::Color(180,185,181) : sf::Color(244,202,141);
     auto path=[&](sdp::TrailPoint a,sdp::TrailPoint b,int radius) {
       const int n=int(std::hypot(b.x-a.x,b.y-a.y)/2)+1;
       sf::CircleShape dot(float(radius),14); dot.setOrigin(float(radius),float(radius));dot.setFillColor(dirt);
@@ -62,8 +62,8 @@ class MountainArt {
     }
     for(int x=0;x<480;++x){
       int y=t.creekY(float(x));
-      box(map_,x,y-10,1,21,0x9b946e); box(map_,x,y-8,1,16,0x399ca6);
-      box(map_,x,y-6,1,6,0x62b9b5);
+      box(map_,x,y-10,1,21,0x9b946e); box(map_,x,y-8,1,16,0x1da5b1);
+      box(map_,x,y-6,1,6,0x46c8bf);
       if((x/6)%4==0)box(map_,x,y+3,1,1,0xb7e2ca);
     }
     for(int bx:t.crossings){

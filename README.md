@@ -10,8 +10,8 @@ KT is an offline pixel-art mountain adventure for Windows. Your first landmark i
 
 | Build | What you can play |
 |---|---|
-| [Published release 1.0.0](https://github.com/creativekamrul/kt/releases/tag/v1.0.0) | The complete climb from Willow Bay to the summit, two guardians, bridge repair, village errands, adaptive trails and four expeditions. |
-| Development build 1.2.0 | Adds the Ember Fox and Bellback Tortoise, brighter scenery, a field guide, per-climber camp saves and a parent report. The screenshots on this page and in the guide come from this build. |
+| [Earlier release 1.0.0](https://github.com/creativekamrul/kt/releases/tag/v1.0.0) | The complete climb from Willow Bay to the summit, two guardians, bridge repair, village errands, adaptive trails and four expeditions. |
+| [Release 1.2.0](https://github.com/creativekamrul/kt/releases/tag/v1.2.0) | Adds the Ember Fox and Bellback Tortoise, brighter scenery, a field guide, per-climber camp saves and a parent report. The screenshots on this page and in the guide come from this build. |
 
 ## Your first climb
 
@@ -22,7 +22,7 @@ Follow the gold arrows west. You can stop to talk with Nia the florist, deliver 
 | ![The bridge deck has two missing numbers and three planks to choose from](docs/screenshots/willow-bridge.png) | ![A creek crosses the upper trail with two footbridges leading uphill](docs/screenshots/upper-trail.png) |
 | Click a plank and its gap, drag it into place, or select both with a controller. | Cross the creek, read the trail markers, and carry supplies or secure anchors to open the climbing rope. |
 
-The Copperhorn watches the pass on Bracken Rise. Farther up, the Moonkite circles Glasswind Hollow. Each has a tell you can learn by watching. The player guide covers both fights, the two development-build guardians, expedition unlocks, and how to return to your save. [Read the illustrated player guide](docs/player-guide.md).
+The Copperhorn watches the pass on Bracken Rise. Farther up, the Moonkite circles Glasswind Hollow. Each has a tell you can learn by watching. The player guide covers both fights, the two 1.2 guardians, expedition unlocks, and how to return to your save. [Read the illustrated player guide](docs/player-guide.md).
 
 ## Play on Windows
 

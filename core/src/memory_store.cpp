@@ -119,6 +119,21 @@ class MemoryStore final : public IDataStore {
     return milestones_.count({child_id, std::string(milestone)}) != 0;
   }
 
+  void saveCamp(int child_id, const std::string& camp) override { camps_[child_id]=camp; }
+  std::string savedCamp(int child_id) const override {
+    auto it=camps_.find(child_id); return it==camps_.end() ? "" : it->second;
+  }
+  void recordPlay(int child_id,const std::string& area,int seconds) override {
+    if(seconds<=0)return;
+    auto& row=play_[child_id][area];
+    row.area=area;row.seconds+=seconds;row.last_played=utcNowIso();
+  }
+  std::vector<AreaPlay> areaPlay(int child_id) const override {
+    std::vector<AreaPlay> rows;
+    auto it=play_.find(child_id);
+    if(it!=play_.end())for(const auto& entry:it->second)rows.push_back(entry.second);
+    return rows;
+  }
   std::vector<SkillSuccessRate> successRates(int child_id, int window_days) const override {
     std::map<std::string, std::pair<int, int>> aggregate;  // skill -> (correct, total)
     for (const auto& attempt : attempts_) {
@@ -163,6 +178,8 @@ class MemoryStore final : public IDataStore {
       it = (it->first.first == child_id) ? skill_states_.erase(it) : std::next(it);
     }
     progress_.erase(child_id);
+    camps_.erase(child_id);
+    play_.erase(child_id);
     for (auto it = milestones_.begin(); it != milestones_.end();) {
       it = (it->first.first == child_id) ? milestones_.erase(it) : std::next(it);
     }
@@ -191,6 +208,8 @@ class MemoryStore final : public IDataStore {
     return history;
   }
 
+  std::map<int,std::string> camps_;
+  std::map<int,std::map<std::string,AreaPlay>> play_;
   int next_child_id_ = 1;
   std::map<int, ChildProfile> children_;
   std::vector<Attempt> attempts_;

@@ -28,9 +28,18 @@ for src, name in [
 ]:
     files.append((src, "licenses/" + name))
 
-controls = """KT 1.0.0
+controls = """KT 1.2.0
 Double-click KT.exe to play. Saves are in %LOCALAPPDATA%/KT/sdp100.db.
 An existing sdp100.db beside KT.exe takes priority for older portable saves.
+
+Select a climber or create a nickname at the lodge. Open Parent report for that
+climber to review focused play time, trail answers and recent progress. Return
+through Pause > Climbers & parent report.
+
+Press F1 for the field guide, or open it from Pause. Choose Save game in Pause
+to save at your current camp. Continue under your nickname to return.
+At altitudes 12 and 36 meet the Ember Fox and Bellback Tortoise. Dodge the
+marked lane and ring a bell for the fox. Parry on the big star for Bellback.
 
 Walk west from Willow Bay plaza to repair Willow Bridge. Cross to the west
 bank and follow the gold marker to Bracken Rise. Choose the fern switchbacks

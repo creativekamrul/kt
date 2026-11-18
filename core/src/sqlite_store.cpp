@@ -119,6 +119,19 @@ CREATE TABLE IF NOT EXISTS milestones (
     PRIMARY KEY (child_id, milestone)
 );
 
+CREATE TABLE IF NOT EXISTS camps (
+    child_id INTEGER PRIMARY KEY REFERENCES children(id) ON DELETE CASCADE,
+    camp TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS area_play (
+    child_id INTEGER NOT NULL REFERENCES children(id) ON DELETE CASCADE,
+    area TEXT NOT NULL,
+    seconds INTEGER NOT NULL,
+    last_played TEXT NOT NULL,
+    PRIMARY KEY (child_id, area)
+);
+
 CREATE INDEX IF NOT EXISTS idx_attempts_child_created
     ON attempts(child_id, created_at);
 )SQL";
@@ -199,6 +212,8 @@ class SqliteStore final : public IDataStore {
 
   void deleteChild(int child_id) override {
     executeTransaction([&] {
+      Statement camp(db_, "DELETE FROM camps WHERE child_id=?");
+      camp.bind(1,child_id); camp.run();
       removeAttempts(child_id);
       removeSkillStates(child_id);
       removeProgress(child_id);
@@ -333,6 +348,31 @@ class SqliteStore final : public IDataStore {
     return statement.step();
   }
 
+  void saveCamp(int child_id, const std::string& camp) override {
+    Statement q(db_, "INSERT INTO camps(child_id,camp) VALUES(?,?) ON CONFLICT(child_id) DO UPDATE SET camp=excluded.camp");
+    q.bind(1, child_id); q.bind(2, camp); q.run();
+  }
+  std::string savedCamp(int child_id) const override {
+    Statement q(db_, "SELECT camp FROM camps WHERE child_id=?");
+    q.bind(1, child_id);
+    return q.step() ? q.columnText(0) : "";
+  }
+
+  void recordPlay(int child_id,const std::string& area,int seconds) override {
+    if(seconds<=0)return;
+    Statement q(db_, "INSERT INTO area_play VALUES(?,?,?,datetime('now')) "
+                     "ON CONFLICT(child_id,area) DO UPDATE SET seconds=area_play.seconds+excluded.seconds,"
+                     "last_played=excluded.last_played");
+    q.bind(1,child_id);q.bind(2,area);q.bind(3,seconds);q.run();
+  }
+  std::vector<AreaPlay> areaPlay(int child_id) const override {
+    Statement q(db_,"SELECT area,seconds,last_played FROM area_play WHERE child_id=? ORDER BY area");
+    q.bind(1,child_id);
+    std::vector<AreaPlay> rows;
+    while(q.step())rows.push_back({q.columnText(0),q.columnInt(1),q.columnText(2)});
+    return rows;
+  }
+
   std::vector<SkillSuccessRate> successRates(int child_id, int window_days) const override {
     // The design document's analytics query, verbatim in shape:
     //   SELECT sub_skill, AVG(correct), COUNT(*) FROM attempts
@@ -376,6 +416,10 @@ class SqliteStore final : public IDataStore {
 
   void resetProgress(int child_id) override {
     executeTransaction([&] {
+      Statement q(db_,"DELETE FROM area_play WHERE child_id=?");
+      q.bind(1,child_id);q.run();
+      Statement camp(db_, "DELETE FROM camps WHERE child_id=?");
+      camp.bind(1,child_id); camp.run();
       removeAttempts(child_id);
       removeSkillStates(child_id);
       removeProgress(child_id);

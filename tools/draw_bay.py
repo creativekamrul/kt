@@ -6,18 +6,18 @@ from PIL import Image, ImageDraw, ImageOps
 
 OUT = Path(__file__).resolve().parents[1] / "shell/assets"
 rng = Random(831)
-bay = Image.new("RGB", (512, 344), "#88bc69")
+bay = Image.new("RGB", (512, 344), "#80c76b")
 d = ImageDraw.Draw(bay)
 mask = Image.new("L", bay.size, 255)
 block = ImageDraw.Draw(mask)
 
 # A spring meadow has broad patches of related hues. Keep the walking lanes quiet.
-for x,y,rx,ry,c in [(59,96,84,47,"#72af68"),(437,83,112,54,"#a2c967"),
-                     (332,281,134,76,"#99c56a"),(15,311,153,85,"#67a976")]:
+for x,y,rx,ry,c in [(59,96,84,47,"#65b878"),(437,83,112,54,"#a0d86b"),
+                     (332,281,134,76,"#92cf69"),(15,311,153,85,"#51af83")]:
     d.ellipse((x-rx,y-ry,x+rx,y+ry),fill=c)
 for _ in range(1300):
     x,y=rng.randrange(512),rng.randrange(344)
-    if rng.randrange(5): d.line((x,y,x+2,y),fill=rng.choice(["#99c874","#80b66b"]))
+    if rng.randrange(5): d.line((x,y,x+2,y),fill=rng.choice(["#91d575","#75bf70"]))
     else:
         d.line((x,y,x-1,y-2),fill="#67a167")
         d.point((x+1,y-2),fill="#b7d476")
@@ -38,13 +38,13 @@ water=[(123,91),(143,91),(146,111),(153,126),(152,142),(160,158),
        (231,296),(218,303),(210,327),(182,344),(0,344),(0,221),(21,216),
        (48,222),(69,230),(95,226),(111,211),(127,200),(132,183),(129,166),
        (125,150),(132,131),(125,114)]
-d.polygon(water,fill="#48b9ae");d.line(water+[water[0]],fill="#f1d59a",width=6)
+d.polygon(water,fill="#28bebb");d.line(water+[water[0]],fill="#f1d59a",width=6)
 block.polygon(water,fill=0)
-d.polygon([(0,243),(44,242),(87,251),(115,238),(104,262),(123,280),(174,287),(188,309),(166,344),(0,344)],fill="#329ba9")
-d.polygon([(0,271),(62,267),(88,278),(94,302),(144,310),(135,344),(0,344)],fill="#348ba4")
+d.polygon([(0,243),(44,242),(87,251),(115,238),(104,262),(123,280),(174,287),(188,309),(166,344),(0,344)],fill="#139fae")
+d.polygon([(0,271),(62,267),(88,278),(94,302),(144,310),(135,344),(0,344)],fill="#168ba8")
 for _ in range(850):
     x,y=rng.randrange(512),rng.randrange(344)
-    if mask.getpixel((x,y))==0 and bay.getpixel((x,y)) in [(72,185,174),(50,155,169),(52,139,164)]:
+    if mask.getpixel((x,y))==0 and bay.getpixel((x,y)) in [(40,190,187),(19,159,174),(22,139,168)]:
         d.line((x,y,x+rng.randrange(2,7),y),fill=rng.choice(["#77cdbc","#60babb","#9dddc8"]))
 # Stone spring.
 for x,y in [(119,93),(124,87),(142,84),(148,95)]:
@@ -60,7 +60,7 @@ lane([(259,181),(276,145),(275,119),(257,95),(244,74),(232,57),(233,28)],19)
 lane([(128,168),(95,165),(79,143),(73,115),(85,88),(111,69),(180,68),(231,52)],15)
 lane([(300,258),(273,258),(253,251),(222,246)],13)
 # Paint the branches as one path so forks share the same soft bank.
-for rim,color in [(4,"#a6ae6c"),(2,"#d3b47b"),(0,"#ebcb8e")]:
+for rim,color in [(4,"#a6ae6c"),(2,"#d3b47b"),(0,"#f2cf91")]:
     for points,width in lanes:
         w=width+rim
         d.line(points,fill=color,width=w,joint="curve")
@@ -68,7 +68,7 @@ for rim,color in [(4,"#a6ae6c"),(2,"#d3b47b"),(0,"#ebcb8e")]:
             d.ellipse((x-w//2,y-w//2,x+w//2,y+w//2),fill=color)
 for _ in range(1000):
     x,y=rng.randrange(511),rng.randrange(343)
-    if bay.getpixel((x,y))==(235,203,142):d.line((x,y,x+1,y),fill=rng.choice(["#dfbc85","#f2d9a2"]))
+    if bay.getpixel((x,y))==(242,207,145):d.line((x,y,x+1,y),fill=rng.choice(["#dfbc85","#f2d9a2"]))
 # Wide wharf and tied-up rowboat.
 def boards(box):
     x,y,r,b=box
@@ -110,8 +110,8 @@ foreground = []
 
 def tree(x,y,size,kind):
     im=Image.new("RGBA",(64,76));b=ImageDraw.Draw(im)
-    pal={"leaf":("#31735d","#4d9564","#79b663","#b8d877"),
-         "blossom":("#9b647b","#cd7892","#ef9dac","#ffd5c2"),
+    pal={"leaf":("#25705b","#3b9b67","#69bd63","#b8d877"),
+         "blossom":("#985978","#d86e99","#ffa2b5","#ffd5c2"),
          "willow":("#317969","#439a70","#75bb6f","#acd475")}[kind]
     b.ellipse((7,61,51,70),fill=(45,78,63,80))
     b.polygon([(23,66),(28,55),(28,30),(34,29),(35,59),(40,66),(32,63),(28,67)],fill="#725449")
@@ -172,8 +172,8 @@ for x in (350,370,399,418):d.rectangle((x,141,x+2,182),fill="#986847")
 d.rectangle((351,180,421,185),fill="#9c8880")
 d.rectangle((405,97,412,122),fill="#927675");d.rectangle((403,95,414,99),fill="#c99a8c")
 d.polygon([(338,145),(358,109),(402,102),(431,138),(430,145),(349,153)],fill="#71474d")
-d.polygon([(340,143),(359,110),(400,105),(378,141)],fill="#ce694d")
-d.polygon([(378,141),(400,105),(428,138)],fill="#e59868")
+d.polygon([(340,143),(359,110),(400,105),(378,141)],fill="#dc664e")
+d.polygon([(378,141),(400,105),(428,138)],fill="#f19b65")
 for y in (115,121,127,133,139):
     l=357-(y-111)//2;r=398-(y-107)//2
     d.line((l,y,r,y-4),fill="#ab584c")

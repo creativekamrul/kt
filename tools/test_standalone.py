@@ -32,7 +32,7 @@ def window_for(process):
         time.sleep(.1)
     raise RuntimeError("The standalone game window did not open")
 
-def launch(exe, working_dir, home, save):
+def launch(exe, working_dir, home, save, expected_name='Player'):
     process = subprocess.Popen([str(exe), "--windowed"], cwd=working_dir,
                                env={**os.environ, "LOCALAPPDATA":str(home)})
     try:
@@ -45,7 +45,7 @@ def launch(exe, working_dir, home, save):
         if code:
             raise RuntimeError(f"KT exited with code {code} during the startup check")
         with closing(sqlite3.connect(save.as_uri() + "?mode=ro", uri=True)) as db:
-            if not db.execute("SELECT 1 FROM children WHERE name='Player'").fetchone():
+            if db.execute("SELECT name FROM children").fetchall() != [(expected_name,)]:
                 raise RuntimeError("KT did not save the player profile")
     finally:
         if process.poll() is None:
@@ -79,10 +79,12 @@ def main():
         portable=folder/"sdp100.db"
         shutil.copyfile(save,portable)
         with closing(sqlite3.connect(portable)) as db:
-            db.execute("UPDATE children SET name='Portable tester'");db.commit()
-        launch(exe,cwd,home,portable)
+            db.execute("UPDATE children SET name='Portable tester'")
+            db.execute("DROP TABLE area_play")
+            db.commit()
+        launch(exe,cwd,home,portable,"Portable tester")
         with closing(sqlite3.connect(portable)) as db:
-            if not db.execute("SELECT 1 FROM children WHERE name='Player'").fetchone():
+            if not db.execute("SELECT 1 FROM sqlite_master WHERE name='area_play'").fetchone():
                 raise RuntimeError("Existing portable save was not used")
     print("Single-file launch, cache repair, user-profile save and legacy portable save passed.")
 

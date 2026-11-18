@@ -7,7 +7,7 @@ from PIL import Image, ImageDraw
 out = Path(__file__).resolve().parents[1] / "shell/assets"
 rng = Random(147)
 W,H=384,448
-im=Image.new("RGB",(W,H),"#69956f"); d=ImageDraw.Draw(im)
+im=Image.new("RGB",(W,H),"#599e78"); d=ImageDraw.Draw(im)
 mask=Image.new("L",im.size); m=ImageDraw.Draw(mask)
 fern=[(192,363),(123,338),(73,303),(112,270),(70,238),(119,207),(149,185),(160,158),(192,146)]
 cairn=[(192,363),(244,336),(275,287),(291,232),(257,183),(225,156),(192,146)]
@@ -19,12 +19,12 @@ def band(draw,points,w,c):
 for row in range(-1,8):
     base=row*73
     rim=[(x,base+int(8*sin(x*.034+row)+4*sin(x*.085-row))) for x in range(-4,W+5,3)]
-    for off,fill in [(26,"#536b72"),(21,"#796b79"),(16,"#a47e7a"),(9,"#c39980"),(2,"#608967"),(-3,"#90ba71")]:
+    for off,fill in [(26,"#536b72"),(21,"#756c86"),(16,"#ad797d"),(9,"#d59a7d"),(2,"#608967"),(-3,"#89c96d")]:
         d.polygon([(0,base-39),(W,base-39)]+[(x,y+off) for x,y in reversed(rim)],fill=fill)
     for x,y in rim[::4]:
         d.line((x,y+5,x+2,y+9,x-1,y+15),fill="#ac847c")
 water=[(138,-10),(153,51),(148,95),(181,157),(209,199),(190,240),(202,275),(195,312),(217,366),(226,456)]
-for w,c in [(21,"#6d8377"),(16,"#368e9d"),(10,"#55bbb9")]:band(d,water,w,c)
+for w,c in [(21,"#6d8377"),(16,"#198f9f"),(10,"#37c6c1")]:band(d,water,w,c)
 for px,py in water[2:-1]:
     for k in range(5): d.line((px-5+k*2,py-4,px-4+k*2,py+7+k%3),fill="#b0e3ce")
 # Alpine pines and rhododendrons outside the cleared walking corridors.
@@ -40,7 +40,7 @@ for y in range(28,H,28):
         left=x-tile.width//2;top=y-tile.height
         if keep.crop((left,top,left+tile.width,y)).getbbox():continue
         im.paste(tile,(left,top),tile)
-for points,width,grass,path in [(fern,23,"#92be75","#eed39a"),(cairn,18,"#b6b183","#d4b09a"),
+for points,width,grass,path in [(fern,23,"#92be75","#f7d59a"),(cairn,18,"#b6b183","#deb399"),
                                 ([(192,436),(192,363)],28,"#9ab970","#e8c48a"),
                                 ([(192,145),(192,32)],19,"#a9bd7e","#dcc39d")]:
     for off,c in [(13,"#7e6c70"),(9,grass),(0,path)]:band(d,points,width+off,c)
@@ -53,16 +53,16 @@ for _ in range(2100):
     x=rng.randrange(2,W-4);y=rng.randrange(3,H-4)
     if mask.getpixel((x,y)):
         if rng.randrange(5)==0:d.line((x,y,x+2,y),fill="#c8a98a")
-    elif im.getpixel((x,y)) in [(144,186,113),(105,149,111)]:
+    elif im.getpixel((x,y)) in [(137,201,109),(89,158,120)]:
         d.line((x,y,x+2,y-2),fill="#78a362")
         if x<145 and rng.randrange(4)==0:
-            d.rectangle((x-1,y-2,x+2,y-1),fill=rng.choice(["#ed8e9e","#ffd786","#c28fc1"]))
+            d.rectangle((x-1,y-2,x+2,y-1),fill=rng.choice(["#f483a1","#ffd786","#c28fc1"]))
 def flag(x,y,color):
     d.rectangle((x,y-16,x+1,y),fill="#875f52")
     d.polygon([(x+2,y-16),(x+13,y-15),(x+8,y-11),(x+2,y-11)],fill=color)
     d.line((x+2,y-16,x+10,y-15),fill="#ffde9b")
 for x,y in fern[1:-1:2]:
-    flag(x-13,y,"#368c86")
+    flag(x-13,y,"#208f86")
     for j in range(3):
         xx=x+13+j*3;yy=y+j%2
         d.line((xx,yy,xx-3,yy-5),fill="#3f8268",width=2)
@@ -73,7 +73,7 @@ for x,y in cairn[1:-1]:
         yy=y-i*3;rr=5-i
         d.ellipse((x+13-rr,yy-3,x+13+rr,yy+1),fill="#837782")
         d.line((x+13-rr+1,yy-2,x+14,yy-3),fill="#d6b39f")
-    flag(x-12,y,"#df8652")
+    flag(x-12,y,"#ec7b43")
 # Split stone treads follow the pitch of the eastern route.
 for (ax,ay),(bx,by) in zip(cairn[1:-2],cairn[2:-1]):
     dx,dy=bx-ax,by-ay
